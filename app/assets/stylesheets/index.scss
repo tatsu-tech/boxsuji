@@ -1,0 +1,92 @@
+.back-ground {
+  height: 100vh;
+  width: 100vw;
+  background-color: azure;
+
+  .cp {
+    cursor: pointer;
+  }
+
+  .game-screen {
+    width: 30%;
+    margin: 0 auto;
+
+    .game-screen__title {
+      text-align: center;
+      
+      .game-screen__title__english {
+        font-size: 80px;
+      }
+      .game-screen__title__japanese {
+        font-size: 60px;
+        margin: 20px 0;
+      }
+    }
+
+    .game-screen__quiz-lists {
+      font-size: 35px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+
+      .game-screen__quiz-lists__create-game {
+        background-color: #f3b954;
+        padding: 10px 30px;
+      }
+      .game-screen__quiz-lists__view-game {
+        background-color: #80d344;
+        padding: 10px 30px;
+      }
+    }
+
+    .game-screen__btn-lists {
+      font-size: 40px;
+      color: white;
+      text-align: center;
+      margin: 0 auto;
+
+      .game-screen__btn-lists__tutorial {
+        background-color: palevioletred;
+        padding: 10px 0;
+        margin: 20px 0;
+      }
+      .game-screen__btn-lists__easy {
+        background-color: #53b1eb;
+        padding: 10px 0;
+        margin: 20px 0;
+      }
+      .game-screen__btn-lists__nomal {
+        background-color: #538beb;
+        padding: 10px 0;
+        margin: 20px 0;
+      }
+      .game-screen__btn-lists__hard {
+        background-color: #2348a5;
+        padding: 10px 0;
+        margin: 20px 0;
+      }
+    }
+        
+    .game-screen__author-url {
+      font-size: 30px;
+      text-align: center;
+      display: flex;
+      justify-content: space-between;
+
+      .game-screen__author-url__twitter {
+        background-color: lightblue;
+        padding: 10px;
+      }
+      .game-screen__author-url__blog {
+        background-color: rgb(160, 160, 160);
+        padding: 10px;
+        margin: 0 20px;
+      }
+      .game-screen__author-url__youtube {
+        background-color: red;
+        padding: 10px;
+      }
+    }
+  }
+}
