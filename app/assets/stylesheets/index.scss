@@ -1,34 +1,36 @@
-.back-ground {
+.top-background {
   height: 100vh;
   width: 100vw;
   background-color: azure;
 
-  .cp {
-    cursor: pointer;
-  }
-
   .game-screen {
-    width: 30%;
+    width:40%;
     margin: 0 auto;
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
 
     .game-screen__title {
       text-align: center;
+      padding-top: 30px;
+      font-weight: bold;
       
       .game-screen__title__english {
-        font-size: 80px;
+        font-size: 55px;
       }
       .game-screen__title__japanese {
-        font-size: 60px;
+        font-size: 45px;
         margin: 20px 0;
       }
     }
 
     .game-screen__quiz-lists {
-      font-size: 35px;
-      color: white;
+      font-size: 30px;
       display: flex;
       justify-content: space-between;
-      margin-top: 40px;
+      margin: 40px 0;
 
       .game-screen__quiz-lists__create-game {
         background-color: #f3b954;
@@ -41,8 +43,7 @@
     }
 
     .game-screen__btn-lists {
-      font-size: 40px;
-      color: white;
+      font-size: 30px;
       text-align: center;
       margin: 0 auto;
 
@@ -65,27 +66,6 @@
         background-color: #2348a5;
         padding: 10px 0;
         margin: 20px 0;
-      }
-    }
-        
-    .game-screen__author-url {
-      font-size: 30px;
-      text-align: center;
-      display: flex;
-      justify-content: space-between;
-
-      .game-screen__author-url__twitter {
-        background-color: lightblue;
-        padding: 10px;
-      }
-      .game-screen__author-url__blog {
-        background-color: rgb(160, 160, 160);
-        padding: 10px;
-        margin: 0 20px;
-      }
-      .game-screen__author-url__youtube {
-        background-color: red;
-        padding: 10px;
       }
     }
   }

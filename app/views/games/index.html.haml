@@ -1,0 +1,44 @@
+.top-background
+
+  .game-screen
+    .game-screen__title
+      .game-screen__title__english
+        BoXuji
+      .game-screen__title__japanese
+        ぼっくすうじ
+
+    .game-screen__quiz-lists
+      = link_to "" do
+        .game-screen__quiz-lists__create-game
+          %i.fas.fa-plus
+          問題作成
+      = link_to "" do
+        .game-screen__quiz-lists__view-game
+          %i.fas.fa-list
+          問題一覧
+
+    .game-screen__btn-lists
+      = link_to "" do
+        .game-screen__btn-lists__tutorial
+          ゲーム説明
+      = link_to "" do
+        .game-screen__btn-lists__easy
+          難易度 低
+          %br/
+          easy
+          %br/
+          6×6マス
+      = link_to "" do
+        .game-screen__btn-lists__nomal
+          難易度 中
+          %br/
+          normal
+          %br/
+          12×12マス
+      = link_to "" do
+        .game-screen__btn-lists__hard
+          難易度 高
+          %br/
+          hard
+          %br/
+          18×18マス
