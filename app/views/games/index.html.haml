@@ -1,5 +1,31 @@
-.top-background
-
+.topbackground
+  .description-screen
+    .english
+      Game Description
+      %br/
+      This game is a very simple puzzle game.
+      %br/
+      Two or more number with a certain meaning are written on
+      %br/
+      a game board composed of several cells.
+      %br/
+      What it means is
+      %br/
+      .color-red "A square or rectangle exist the always include the cells  where the numbers are written."
+      Based on this rule, just make a box so that all the cells are filled.
+    %br/
+    ゲーム説明
+    %br/
+    このゲームは、とても簡単なルールのパズルゲームです。
+    %br/
+    いくつかのマスによって構成されたゲーム盤に、ある意味を持つ 2 以上の数字がひとつ書き込まれています。
+    %br/
+    その意味とは、
+    %br/
+    .color-red 『数字が書き込まれたマスを必ず含み、その数字分のマスを使った正方形もしくは長方形のはBoxが存在する』
+    というものです。
+    %br/
+    あとはこのルールに基づき、全てのマスが埋まるようにBoxを作るだけです。
   .game-screen
     .game-screen__title
       .game-screen__title__english
@@ -11,34 +37,24 @@
       = link_to "" do
         .game-screen__quiz-lists__create-game
           %i.fas.fa-plus
-          問題作成
+          Create
       = link_to "" do
-        .game-screen__quiz-lists__view-game
+        .game-screen__quiz-lists__created-game
           %i.fas.fa-list
-          問題一覧
+          Created
 
     .game-screen__btn-lists
-      = link_to "" do
-        .game-screen__btn-lists__tutorial
-          ゲーム説明
+      .game-screen__btn-lists__description
+        #description Game Description
       = link_to easy_games_path do
         .game-screen__btn-lists__easy
-          難易度 低
-          %br/
-          easy
-          %br/
-          6×6マス
-      = link_to "" do
+          .main Easy
+          6×6
+      = link_to normal_games_path do
         .game-screen__btn-lists__nomal
-          難易度 中
-          %br/
-          normal
-          %br/
-          12×12マス
-      = link_to "" do
+          .main Normal
+          9×9
+      = link_to hard_games_path do
         .game-screen__btn-lists__hard
-          難易度 高
-          %br/
-          hard
-          %br/
-          18×18マス
+          .main Hard
+          12x12

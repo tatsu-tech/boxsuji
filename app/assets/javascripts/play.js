@@ -10,10 +10,10 @@ $(document).on('turbolinks:load', function() {
     var totalNum = 36
     } else if(pathName.includes("/normal")) {
     // 難易度normalの場合のマス数の指定(12x12=144マス)
-    var totalNum = 144
+    var totalNum = 81
     } else if(pathName.includes("/hard")) {
     // 難易度normalの場合のマス数の指定(18x18=324マス)
-    var totalNum = 324
+    var totalNum = 144
     }
 
     // 難易度に応じ、ひとboxのマス数における高さおよび幅の最大値を取得(totalNumの平方根)
@@ -22,16 +22,17 @@ $(document).on('turbolinks:load', function() {
     // 盤面の一辺の長さを求め、そこからひとマス当たりの一辺の長さを求める
     const oneSideNum = boardSize / maxNumBox
 
-    // ゲームの盤面である.easybackground__boardの左上の角のx座標およびy座標を取得する
-    const x = Number($(".easybackground__board").offset().left);
-    const y = Number($(".easybackground__board").offset().top);
+    // ゲームの盤面である.playbackground__main--boxの左上の角のx座標およびy座標を取得する
+    const x = Number($(".playbackground__main--box").offset().left);
+    const y = Number($(".playbackground__main--box").offset().top);
+    console.log(x, y)
 
     // 難易度の関係上、2,3,5以外の素数を除外し、maxNumBox以下の整数を配列にする
     // この処理により、allNumsという配列はeasyなら[2, 3, 4, 5, 6]、normalなら[2, 3, 4, 5, 6, 8, 9]、hardなら[2, 3, 4, 5, 6, 8, 9, 10, 12]となる
     const primeNums = [];
     const minPrime = 7
     const maxPrime = maxNumBox
-    const range = function(min,max){
+    const range = function(min, max){
       return [...Array(max - min + 1).keys()].map(value => value + min)
     }
     range(minPrime, maxPrime).filter( prime => {
@@ -41,7 +42,7 @@ $(document).on('turbolinks:load', function() {
         })
     }).forEach(prime => primeNums.push(prime))
     const allNums = [];
-    for(var i = 2; i <= maxNumBox; i++) {
+    for (var i = 2; i <= maxNumBox; i++) {
       if (primeNums.indexOf(i) === -1) {
         allNums.push(i)
       }
@@ -72,100 +73,72 @@ $(document).on('turbolinks:load', function() {
     });
     console.log(divisorAllNums)
 
-    const check = (array1, array2) => {
-      return array1.filter(value => array2.includes(value));
-    }
-    // 2つの配列の共通していない要素を削除する関数outを定義
-    const out = (array3, array4) => {
-      return [...array3, ...array4].filter(value => !array3.includes(value) || !array4.includes(value));
-    }
-    const cut = (array5) => {
-      return array5.filter((value, index, self) => self.indexOf(value) === index);
-    }
-    const match = (array6) => {
-      return array6.filter((value, index, self) => self.indexOf(value) === index && self.lastIndexOf(value) !== index);
-    }
-    const notMatch = (array7) => {
-      return array7.filter((value, index, self) => self.indexOf(value) === self.lastIndexOf(value));
-    }
-
-    // htmlの.easybackground__board内に存在する%canvas#canvasBoardに対してゲームの盤面を描写する
-    // boardSizeは難易度に関係なく720pxで固定だが、マスの線はoneSideNumに依存するため、難易度に応じて変化する
-    var canvasBoard = document.getElementById('canvasBoard');
-    var ctxBoard = canvasBoard.getContext('2d');
-    canvasBoard.height = boardSize;
-    canvasBoard.width = boardSize;
-    ctxBoard.beginPath();
-    ctxBoard.moveTo(0, 0);
-    ctxBoard.lineTo(boardSize, 0);
-    ctxBoard.lineTo(boardSize, boardSize);
-    ctxBoard.lineTo(0, boardSize);
-    ctxBoard.closePath();
-    ctxBoard.fillStyle = "lightgray";
-    ctxBoard.strokeStyle = "black";
-    ctxBoard.lineWidth = 1;
-    ctxBoard.fill();
-    ctxBoard.stroke();
-    var canvasLine = document.getElementById('canvasLine');
-    var ctxLine = canvasLine.getContext('2d');
-    canvasLine.height = boardSize;
-    canvasLine.width = boardSize;
-    for(var i = 1; i < maxNumBox; i++) {
-      ctxLine.beginPath()
-      ctxLine.moveTo(0, i * oneSideNum)
-      ctxLine.lineTo(i * boardSize, i * oneSideNum)
-      ctxLine.moveTo(i * oneSideNum, 0)
-      ctxLine.lineTo(i * oneSideNum, i * boardSize)
-      ctxLine.stroke()
+    // 2つの配列の共通する要素を削除する関数overlapAllDeleteを定義([0,1,2,3] + [3,1,0] => [2])
+    const overlapAllDelete = (array1, array2) => {
+      return [...array1, ...array2].filter(value => !array1.includes(value) || !array2.includes(value));
     }
     if (totalNum == 36) {
       var xuji = [5, 3, 2, 5, 6, 4, 2, 2, 4, 3]
-      var xujiPositions = ["600:40", "600:160", "840:160", "960:280", "360:400", "720:400", "840:520", "480:640", "600:640", "960:640"]
-      var position = []
-      for(var i = 0, j = maxNumBox; i < j; i++) {
-        for(var k = 0; k < j; k++) {
-          var index = i * j + k
-          var canvas = document.createElement("canvas");
-          $(".easybackground__box").append(canvas);
-          $(`.easybackground__box canvas:eq(${index})`).attr('id','canvas' + index + "box");
-          eval("var canvas" + index + "box = document.getElementById('canvas" + index + "box');");
-          eval("var ctx" + index + "box = canvas" + index + "box.getContext('2d');");
-          eval("canvas" + index + "box.width = " + `${oneSideNum}` + ";");
-          eval("canvas" + index + "box.height = " + `${oneSideNum}` + ";");
-          $(`.easybackground__box canvas:eq(${index})`).attr('data-position',`${x + oneSideNum * k}:${y + oneSideNum * i}`);
-          $(`.easybackground__box canvas:eq(${index})`).attr('data-on-off','off');
-          position.push(`${x + oneSideNum * k}:${y + oneSideNum * i}`);
-        }
-      };
-      for (var i = 0, j = xuji.length; i < j; i++) {
-        var xujiPosition = xujiPositions[i]
-        var colonIndex = xujiPosition.indexOf(":");
-        var xujiPositionX = Number(xujiPosition.slice(0, colonIndex));
-        var xujiPositionY = Number(xujiPosition.slice(colonIndex + 1));
+      var xujiPositions = ["600:10", "600:130", "840:130", "960:250", "360:370", "720:370", "840:490", "480:610", "600:610", "960:610"]
+    }
+    if (totalNum == 81) {
+      var xuji = [6, 9, 6, 4, 3, 2, 5, 4, 5, 3, 8, 3, 8, 9, 4, 2]
+      var xujiPositions = ["360:10", "840:90", "520:170", "680:170", "440:250", "680:250", "1000:250", "360:330", "600:330", "520:410", "920:410", "1000:490", "440:570", "760:570", "600:650", "1000:650"]
+    }
+    if (totalNum == 144) {
+      var xuji = [8, 8, 3, 9, 5, 12, 5, 6, 4, 4, 4, 6, 3, 6, 3, 3, 8, 10, 4, 6, 5, 10, 12]
+      var xujiPositions = ["540:10", "960:10", "780:70", "360:130", "420:190", "840:190", "600:250", "780:250", "1020:250", "480:310", "660:310", "960:310", "420:370", "720:370", "600:430", "660:430", "840:430", "420:490", "1020:490", "600:550", "780:550", "900:610", "480:670"]
+    }
+    var position = []
+    for(var i = 0, j = maxNumBox; i < j; i++) {
+      for(var k = 0; k < j; k++) {
+        var index = i * j + k
         var canvas = document.createElement("canvas");
-        $(".easybackground__xuji").append(canvas);
-        $(`.easybackground__xuji canvas:eq(${i})`).attr('id','canvas' + i);
-        $(`.easybackground__xuji canvas:eq(${i})`).attr('class','canvas' + xuji[i] + 'xuji');
-        eval("var canvas" + i + " = document.getElementById('canvas" + i + "');");
-        eval("var ctx" + i + " = canvas" + i + ".getContext('2d');");
-        eval("canvas" + i + ".width = " + `${oneSideNum}` + ";");
-        eval("canvas" + i + ".height = " + `${oneSideNum}` + ";");
-        eval("$('#canvas" + i + "').attr('data-position', '" + xujiPosition + "');");
-        eval("$('#canvas" + i + "').offset({top: " + `${xujiPositionY}` + ", left: " + `${xujiPositionX}` + "});");
-        eval("$('#canvas" + i + "').css('position', 'absolute');");
-        eval("$('#canvas" + i + "').css('cursor', 'pointer');");
-        eval("ctx" + i + ".textAlign = 'center';");
-        eval("ctx" + i + ".textBaseline = 'middle';");
-        eval("ctx" + i + ".font = 'bold " + `${oneSideNum / 2}` + "px Arial, meiryo, sans-serif';");
-        eval("ctx" + i + ".fillStyle = 'rgba(0, 0, 0, 0.8)';");
-        eval("ctx" + i + ".fillText('" + `${xuji[i]}` + "', " + `${oneSideNum / 2}, ${oneSideNum / 2}` + ");");
-        $(`.easybackground__box canvas[data-position='${xujiPosition}']`).attr('data-on-off', 'on');
+        $(".playbackground__main--box").append(canvas);
+        $(`.playbackground__main--box canvas:eq(${index})`).attr('id','canvas' + index + "box");
+        eval("var canvas" + index + "box = document.getElementById('canvas" + index + "box');");
+        eval("var ctx" + index + "box = canvas" + index + "box.getContext('2d');");
+        eval("canvas" + index + "box.width = " + `${oneSideNum}` + ";");
+        eval("canvas" + index + "box.height = " + `${oneSideNum}` + ";");
+        $(`.playbackground__main--box canvas:eq(${index})`).attr('data-position',`${x + oneSideNum * k}:${y + oneSideNum * i}`);
+        $(`.playbackground__main--box canvas:eq(${index})`).attr('data-onOff','off');
+        eval("ctx" + index + "box.rect(0, 0, " + `${oneSideNum}` + ", " + `${oneSideNum}` + ");");
+        eval("ctx" + index + "box.fillStyle = 'lightgray';");
+        eval("ctx" + index + "box.strokeStyle = 'black';");
+        eval("ctx" + index + "box.lineWidth = 1;");
+        eval("ctx" + index + "box.fill();");
+        eval("ctx" + index + "box.stroke();");
+        position.push(`${x + oneSideNum * k}:${y + oneSideNum * i}`);
       }
+    };
+    for (var i = 0, j = xuji.length; i < j; i++) {
+      var xujiPosition = xujiPositions[i]
+      var colonIndex = xujiPosition.indexOf(":");
+      var xujiPositionX = Number(xujiPosition.slice(0, colonIndex));
+      var xujiPositionY = Number(xujiPosition.slice(colonIndex + 1));
+      var canvas = document.createElement("canvas");
+      $(".playbackground__main--xuji").append(canvas);
+      $(`.playbackground__main--xuji canvas:eq(${i})`).attr('id','canvas' + i);
+      $(`.playbackground__main--xuji canvas:eq(${i})`).attr('class','canvas' + xuji[i] + 'xuji');
+      eval("var canvas" + i + " = document.getElementById('canvas" + i + "');");
+      eval("var ctx" + i + " = canvas" + i + ".getContext('2d');");
+      eval("canvas" + i + ".width = " + `${oneSideNum}` + ";");
+      eval("canvas" + i + ".height = " + `${oneSideNum}` + ";");
+      eval("$('#canvas" + i + "').attr('data-position', '" + xujiPosition + "');");
+      eval("$('#canvas" + i + "').offset({top: " + `${xujiPositionY}` + ", left: " + `${xujiPositionX}` + "});");
+      eval("$('#canvas" + i + "').css('position', 'absolute');");
+      eval("$('#canvas" + i + "').css('cursor', 'pointer');");
+      eval("ctx" + i + ".textAlign = 'center';");
+      eval("ctx" + i + ".textBaseline = 'middle';");
+      eval("ctx" + i + ".font = 'bold " + `${oneSideNum / 2}` + "px Arial, meiryo, sans-serif';");
+      eval("ctx" + i + ".fillStyle = 'rgba(0, 0, 0, 0.8)';");
+      eval("ctx" + i + ".fillText('" + `${xuji[i]}` + "', " + `${oneSideNum / 2}, ${oneSideNum / 2}` + ");");
+      $(`.playbackground__main--box canvas[data-position='${xujiPosition}']`).attr('data-onOff', 'on');
     }
     var totalXujiPositions = []
     for (var i = 0, j = xuji.length; i < j; i++) {
       var allXujiPositions = []
-      var totalPosition = out(position, xujiPositions);
+      var totalPosition = overlapAllDelete(position, xujiPositions);
       var xujiNum = xuji[i]
       console.log(xujiNum)
       var xujiPosition = xujiPositions[i]
@@ -178,7 +151,7 @@ $(document).on('turbolinks:load', function() {
       var downPositions = []
       for (var k = 1, l = xujiNum; k < l; k++) {
         var matchPosition = `${xujiPositionX + oneSideNum * k}:${xujiPositionY}`
-        var rightPosition = totalPosition.find(oneP => oneP == matchPosition && $(`.easybackground__box canvas[data-position='${matchPosition}']`).attr('data-on-off') == "off");
+        var rightPosition = totalPosition.find(oneP => oneP == matchPosition && $(`.playbackground__main--box canvas[data-position='${matchPosition}']`).attr('data-onOff') == "off");
         if (rightPosition === undefined) {
           break;
         }
@@ -186,7 +159,7 @@ $(document).on('turbolinks:load', function() {
       }
       for (var k = 1, l = xujiNum; k < l; k++) {
         var matchPosition = `${xujiPositionX - oneSideNum * k}:${xujiPositionY}`
-        var leftPosition = totalPosition.find(oneP => oneP == matchPosition && $(`.easybackground__box canvas[data-position='${matchPosition}']`).attr('data-on-off') == "off");
+        var leftPosition = totalPosition.find(oneP => oneP == matchPosition && $(`.playbackground__main--box canvas[data-position='${matchPosition}']`).attr('data-onOff') == "off");
         if (leftPosition === undefined) {
           break;
         }
@@ -194,7 +167,7 @@ $(document).on('turbolinks:load', function() {
       }
       for (var k = 1, l = xujiNum; k < l; k++) {
         var matchPosition = `${xujiPositionX}:${xujiPositionY + oneSideNum * k}`
-        var upPosition = totalPosition.find(oneP => oneP == matchPosition && $(`.easybackground__box canvas[data-position='${matchPosition}']`).attr('data-on-off') == "off");
+        var upPosition = totalPosition.find(oneP => oneP == matchPosition && $(`.playbackground__main--box canvas[data-position='${matchPosition}']`).attr('data-onOff') == "off");
         if (upPosition === undefined) {
           break;
         }
@@ -202,7 +175,7 @@ $(document).on('turbolinks:load', function() {
       }
       for (var k = 1, l = xujiNum; k < l; k++) {
         var matchPosition = `${xujiPositionX}:${xujiPositionY - oneSideNum * k}`
-        var downPosition = totalPosition.find(oneP => oneP == matchPosition && $(`.easybackground__box canvas[data-position='${matchPosition}']`).attr('data-on-off') == "off");
+        var downPosition = totalPosition.find(oneP => oneP == matchPosition && $(`.playbackground__main--box canvas[data-position='${matchPosition}']`).attr('data-onOff') == "off");
         if (downPosition === undefined) {
           break;
         }
@@ -255,7 +228,7 @@ $(document).on('turbolinks:load', function() {
           for (var m = 0, n = otherPatternX; m < n; m++) {
             block: for (var o = 0, p = otherPatternY; o < p; o++) {
               var oneOtherPosition = `${otherPositionX + oneSideNum * m}:${otherPositionY + oneSideNum * o}`
-              var checkOneOtherPosition = totalPosition.find(oneP => oneP == oneOtherPosition && $(`.easybackground__box canvas[data-position='${oneOtherPosition}']`).attr('data-on-off') == "off");
+              var checkOneOtherPosition = totalPosition.find(oneP => oneP == oneOtherPosition && $(`.playbackground__main--box canvas[data-position='${oneOtherPosition}']`).attr('data-onOff') == "off");
               if (checkOneOtherPosition === undefined && oneOtherPosition != xujiPosition) {
                 continue block;
               } else {
@@ -266,7 +239,7 @@ $(document).on('turbolinks:load', function() {
                     var oneOtherPositionX = Number(oneOtherPosition.slice(0, colonIndex));
                     var oneOtherPositionY = Number(oneOtherPosition.slice(colonIndex + 1));
                     var oneOtherSetPosition = `${oneOtherPositionX + oneSideNum * q}:${oneOtherPositionY + oneSideNum * r}`
-                    var checkOneOtherSetPosition = totalPosition.find(oneP => oneP == oneOtherSetPosition && $(`.easybackground__box canvas[data-position='${oneOtherSetPosition}']`).attr('data-on-off') == "off");
+                    var checkOneOtherSetPosition = totalPosition.find(oneP => oneP == oneOtherSetPosition && $(`.playbackground__main--box canvas[data-position='${oneOtherSetPosition}']`).attr('data-onOff') == "off");
                     if (checkOneOtherSetPosition === undefined && oneOtherSetPosition != xujiPosition) {
                       continue block;
                     } else {
@@ -289,11 +262,199 @@ $(document).on('turbolinks:load', function() {
       }
       console.log(xuji)
     }
+    var lastClickedXuji = []
+    for (var i = 0, j = xuji.length; i < j; i++) {
+      var xujiPosition = xujiPositions[i]
+      console.log(xujiPosition)
+      var clickNum = {[i]: 0};
+      console.log(clickNum[i])
+      $(`.playbackground__main--xuji canvas[data-position='${xujiPosition}']`).attr('data-clickNum', clickNum[i]);
+      var canvas = document.createElement("canvas");
+      $(".playbackground__main--boxuji").append(canvas);
+      $(`.playbackground__main--boxuji canvas:eq(${i})`).attr("id", "canvas" + i + "boxuji");
+      eval("var canvas" + i + "boxuji = document.getElementById('canvas" + i + "boxuji');");
+      eval("var ctx" + i + "boxuji = canvas" + i + "boxuji.getContext('2d');");
+      eval("canvas" + i + "boxuji.width = " + `${boardSize}` + ";");
+      eval("canvas" + i + "boxuji.height = " + `${boardSize}` + ";");
+      eval("$('#canvas" + i + "boxuji" + "').offset({top: " + `${y}` + ", left: " + `${x}` + "});");
+      eval("$('#canvas" + i + "boxuji" + "').css('position', 'absolute');");
+      $(".playbackground__main--xuji").on("click", `canvas[data-position='${xujiPosition}']`, function() {
+        return function(e) {
+          console.log('click!!!!!')
+          console.log(this)
+          var num = Number($(this).attr('data-clickNum'));
+          var num = num + 1
+          console.log(num)
+          $(this).attr('data-clickNum', num);
+          var xujiIndex = this.id
+          var sIndex = xujiIndex.indexOf("s");
+          var index = Number(xujiIndex.slice(sIndex + 1));
+          if (lastClickedXuji[lastClickedXuji.length - 1] != index) {
+            lastClickedXuji.push(index);
+          }
+          var xujiPosition = xujiPositions[index]
+          console.log(xujiPosition)
+          console.log(totalXujiPositions)
+          var xujiAllPositions = totalXujiPositions[index]
+          console.log(xujiAllPositions)
+          var xujiAllPositionsLength = xujiAllPositions.length
+          var xujiOnePositions = xujiAllPositions[num - 1]
+          console.log(xujiOnePositions)
+          var xujiHavePositions = $(`.playbackground__main--xuji canvas[data-position='${xujiPosition}']`).attr('data-xujiHavePositions');
+          console.log(xujiHavePositions)
+          if (xujiHavePositions != undefined) {
+            var xujiHavePositions = xujiHavePositions.split(",");
+            console.log(xujiHavePositions)
+            eval("ctx" + index + "boxuji.clearRect(0, 0, " + `${boardSize}` + ", " + `${boardSize}` + ");");
+          }
+          var firstXujiOnePosition = xujiOnePositions[0]
+          console.log(firstXujiOnePosition)
+          var colonIndex = firstXujiOnePosition.indexOf(":");
+          var firstXujiOnePositionX = Number(firstXujiOnePosition.slice(0, colonIndex)) - x;
+          var firstXujiOnePositionY = Number(firstXujiOnePosition.slice(colonIndex + 1)) - y;
+          var lastXujiOnePosition = xujiOnePositions[xujiOnePositions.length - 1]
+          console.log(lastXujiOnePosition)
+          var colonIndex = lastXujiOnePosition.indexOf(":");
+          var lastXujiOnePositionX = Number(lastXujiOnePosition.slice(0, colonIndex)) - x + oneSideNum;
+          var lastXujiOnePositionY = Number(lastXujiOnePosition.slice(colonIndex + 1)) - y + oneSideNum;
+          console.log(firstXujiOnePositionX, firstXujiOnePositionY)
+          console.log(lastXujiOnePositionX, lastXujiOnePositionY)
+          eval("ctx" + index + "boxuji.beginPath();");
+          eval("ctx" + index + "boxuji.moveTo(" + `${firstXujiOnePositionX}` + "," + `${firstXujiOnePositionY}` + ");");
+          eval("ctx" + index + "boxuji.lineTo(" + `${lastXujiOnePositionX}` + "," + `${firstXujiOnePositionY}` + ");");
+          eval("ctx" + index + "boxuji.lineTo(" + `${lastXujiOnePositionX}` + ", " + `${lastXujiOnePositionY}` + ");");
+          eval("ctx" + index + "boxuji.lineTo(" + `${firstXujiOnePositionX}` + ", " + `${lastXujiOnePositionY}` + ");");
+          eval("ctx" + index + "boxuji.closePath();");
+          eval("ctx" + index + "boxuji.fillStyle = 'rgba(0,255,0,0.4)';");
+          eval("ctx" + index + "boxuji.strokeStyle = 'red';");
+          eval("ctx" + index + "boxuji.lineWidth = 3;");
+          eval("ctx" + index + "boxuji.fill();");
+          eval("ctx" + index + "boxuji.stroke();");
+          $(`.playbackground__main--xuji canvas[data-position='${xujiPosition}']`).attr('data-xujiHavePositions', [...xujiOnePositions]);
+          if (num == xujiAllPositionsLength) {
+            console.log("ififififififififififififif")
+            $(`.playbackground__main--xuji canvas[data-position='${xujiPosition}']`).attr('data-clickNum', 0);
+          }
+          var setXujiPositions = []
+          for (var i = 0, j = xuji.length; i < j; i++) {
+            var oneSetXujiPositions = $(`.playbackground__main--xuji canvas:eq(${i})`).attr('data-xujiHavePositions');
+            console.log(k, oneSetXujiPositions)
+            if (oneSetXujiPositions == undefined) {
+              break;
+            }
+            var oneSetXujiPositions = oneSetXujiPositions.split(",");
+            setXujiPositions.push(...oneSetXujiPositions);
+            console.log(setXujiPositions)
+            if (overlapAllDelete(position, setXujiPositions).length == 0) {
+              setTimeout(alertTime, 50);
+              function alertTime() {
+                alert('Game Clear！')
+              }
+            }
+          }
+        }
+      }())
+    }
+    $(".playbackground__footer--left").on("click", "#xujiResetBtn", function() {
+      if (lastClickedXuji.length > 0) {
+        var lastClickedXujiIndex = lastClickedXuji.pop();
+        console.log(lastClickedXujiIndex)
+        eval("ctx" + lastClickedXujiIndex + "boxuji.clearRect(0, 0, " + `${boardSize}` + ", " + `${boardSize}` + ");");
+        $(`.playbackground__main--xuji canvas:eq(${lastClickedXujiIndex})`).removeAttr('data-xujiHavePositions');
+        $(`.playbackground__main--xuji canvas:eq(${lastClickedXujiIndex})`).attr('data-clickNum', 0);
+      } else {
+        alert('Nothing to reset.')
+      }
+    })
+    $(".playbackground__footer--left").on("click", "#allResetBtn", function() {
+      if (lastClickedXuji.length > 0) {
+        for (var i = 0, j = xuji.length; i < j; i++) {
+          lastClickedXuji.length = 0
+          eval("ctx" + i + "boxuji.clearRect(0, 0, " + `${boardSize}` + ", " + `${boardSize}` + ");");
+          $(`.playbackground__main--xuji canvas:eq(${i})`).removeAttr('data-xujiHavePositions');
+          $(`.playbackground__main--xuji canvas:eq(${i})`).attr('data-clickNum', 0);
+        }
+      } else {
+        alert('Nothing to reset.')
+      }
+    })
+    $(".playbackground__footer--right").on("click", "#xujiReturnBtn", function() {
+      if (lastClickedXuji.length > 0) {
+        var lastClickedXujiIndex = lastClickedXuji[lastClickedXuji.length - 1];
+        var xujiAllPositions = totalXujiPositions[lastClickedXujiIndex]
+        var xujiAllPositionsLength = xujiAllPositions.length
+        if (xujiAllPositionsLength != 1) {
+          var num = $(`.playbackground__main--xuji canvas:eq(${lastClickedXujiIndex})`).attr('data-clickNum');
+          if (num == 0) {
+            $(`.playbackground__main--xuji canvas:eq(${lastClickedXujiIndex})`).attr('data-clickNum', `${xujiAllPositions.length - 1}`);
+            var lastClickedXujiPositions = totalXujiPositions[lastClickedXujiIndex]
+            var xujiOnePositions = lastClickedXujiPositions[xujiAllPositions.length - 2]
+            console.log(xujiOnePositions)
+          } else if (num == 1) {
+            $(`.playbackground__main--xuji canvas:eq(${lastClickedXujiIndex})`).attr('data-clickNum', 0);
+            var xujiOnePositions = xujiAllPositions[xujiAllPositions.length - 1]
+            console.log(xujiOnePositions)
+          } else {
+            console.log(num)
+            var xujiAllPositions = totalXujiPositions[lastClickedXujiIndex]
+            console.log(xujiAllPositions)
+            $(`.playbackground__main--xuji canvas:eq(${lastClickedXujiIndex})`).attr('data-clickNum', `${num - 1}`);
+            var xujiOnePositions = xujiAllPositions[num - 2]
+            console.log(xujiOnePositions)
+          }
+          var firstXujiOnePosition = xujiOnePositions[0]
+          console.log(firstXujiOnePosition)
+          var colonIndex = firstXujiOnePosition.indexOf(":");
+          var firstXujiOnePositionX = Number(firstXujiOnePosition.slice(0, colonIndex)) - x;
+          var firstXujiOnePositionY = Number(firstXujiOnePosition.slice(colonIndex + 1)) - y;
+          var lastXujiOnePosition = xujiOnePositions[xujiOnePositions.length - 1]
+          console.log(lastXujiOnePosition)
+          var colonIndex = lastXujiOnePosition.indexOf(":");
+          var lastXujiOnePositionX = Number(lastXujiOnePosition.slice(0, colonIndex)) - x + oneSideNum;
+          var lastXujiOnePositionY = Number(lastXujiOnePosition.slice(colonIndex + 1)) - y + oneSideNum;
+          console.log(firstXujiOnePositionX, firstXujiOnePositionY)
+          console.log(lastXujiOnePositionX, lastXujiOnePositionY)
+          eval("ctx" + lastClickedXujiIndex + "boxuji.clearRect(0, 0, " + `${boardSize}` + ", " + `${boardSize}` + ");");
+          eval("ctx" + lastClickedXujiIndex + "boxuji.beginPath();");
+          eval("ctx" + lastClickedXujiIndex + "boxuji.moveTo(" + `${firstXujiOnePositionX}` + "," + `${firstXujiOnePositionY}` + ");");
+          eval("ctx" + lastClickedXujiIndex + "boxuji.lineTo(" + `${lastXujiOnePositionX}` + "," + `${firstXujiOnePositionY}` + ");");
+          eval("ctx" + lastClickedXujiIndex + "boxuji.lineTo(" + `${lastXujiOnePositionX}` + ", " + `${lastXujiOnePositionY}` + ");");
+          eval("ctx" + lastClickedXujiIndex + "boxuji.lineTo(" + `${firstXujiOnePositionX}` + ", " + `${lastXujiOnePositionY}` + ");");
+          eval("ctx" + lastClickedXujiIndex + "boxuji.closePath();");
+          eval("ctx" + lastClickedXujiIndex + "boxuji.fillStyle = 'rgba(0,255,0,0.4)';");
+          eval("ctx" + lastClickedXujiIndex + "boxuji.strokeStyle = 'red';");
+          eval("ctx" + lastClickedXujiIndex + "boxuji.lineWidth = 3;");
+          eval("ctx" + lastClickedXujiIndex + "boxuji.fill();");
+          eval("ctx" + lastClickedXujiIndex + "boxuji.stroke();");
+          $(`.playbackground__main--xuji canvas:eq(${lastClickedXujiIndex})`).attr('data-xujiHavePositions', [...xujiOnePositions]);
+          var setXujiPositions = []
+          for (var i = 0, j = xuji.length; i < j; i++) {
+            var oneSetXujiPositions = $(`.playbackground__main--xuji canvas:eq(${i})`).attr('data-xujiHavePositions');
+            console.log(oneSetXujiPositions)
+            if (oneSetXujiPositions == undefined) {
+              break;
+            }
+            var oneSetXujiPositions = oneSetXujiPositions.split(",");
+            console.log(oneSetXujiPositions)
+            setXujiPositions.push(...oneSetXujiPositions);
+            console.log(setXujiPositions)
+            if (overlapAllDelete(position, setXujiPositions).length == 0) {
+              setTimeout(alertTime, 50);
+              function alertTime() {
+                alert('Game Clear！')
+              }
+            }
+          }
+        }
+      } else {
+        alert('Nothing to return.')
+      }
+    })
   }
 })
 
 
-      // 問題をランダムに作成する処理を完成させようとしたが、難しいため一時的に保留
+      // 問題をランダムに作成する処理を完成させようとしたが、難しいため保留
       // 取得したランダムのマス数のboxを繰り返し足していきつつ、合計がtotalNumに満たなければそのboxを配列に入れるという処理を、
       // 合計がtotalNumと一致するまで繰り返す
       // var totalRandNum = [];
@@ -785,8 +946,6 @@ $(document).on('turbolinks:load', function() {
       //       } else {
       //         matchPosition.forEach
       //       }
-
-      //     aaaaaaaaaaaaaaaaaa
 
 
 
