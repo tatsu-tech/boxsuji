@@ -1,8 +1,30 @@
-.top-background {
+.topbackground {
   height: 100vh;
   width: 100vw;
   background-color: azure;
+  position: relative;
 
+  .description-screen {
+    display: none;
+    height: 600px;
+    width: 1000px;
+    background-color: white;
+    font-size: 20px;
+    line-height: 40px;
+    text-align: center;
+    border: solid 2px rgb(128, 128, 128);
+    position: absolute;
+    top: 22%;
+    right: 50%;
+    transform: translate(50%, 0);
+    cursor: pointer;
+    .english {
+      font-size: 22px;
+    }
+    .color-red{
+      color: red;
+    }
+  }
   .game-screen {
     width:40%;
     margin: 0 auto;
@@ -18,7 +40,7 @@
       font-weight: bold;
       
       .game-screen__title__english {
-        font-size: 55px;
+        font-size: 70px;
       }
       .game-screen__title__japanese {
         font-size: 45px;
@@ -27,7 +49,7 @@
     }
 
     .game-screen__quiz-lists {
-      font-size: 30px;
+      font-size: 35px;
       display: flex;
       justify-content: space-between;
       margin: 40px 0;
@@ -36,21 +58,23 @@
         background-color: #f3b954;
         padding: 10px 30px;
       }
-      .game-screen__quiz-lists__view-game {
+      .game-screen__quiz-lists__created-game {
         background-color: #80d344;
         padding: 10px 30px;
       }
     }
 
     .game-screen__btn-lists {
-      font-size: 30px;
+      font-size: 35px;
       text-align: center;
       margin: 0 auto;
 
-      .game-screen__btn-lists__tutorial {
+      .game-screen__btn-lists__description {
         background-color: palevioletred;
+        color: white;
         padding: 10px 0;
         margin: 20px 0;
+        cursor: pointer;
       }
       .game-screen__btn-lists__easy {
         background-color: #53b1eb;
@@ -66,6 +90,10 @@
         background-color: #2348a5;
         padding: 10px 0;
         margin: 20px 0;
+      }
+      .main {
+        font-size: 40px;
+        padding-bottom: 15px;
       }
     }
   }
