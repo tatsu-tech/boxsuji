@@ -1,11 +1,18 @@
 .playbackground
   .playbackground__main
-    .playbackground__main--box
+    .playbackground__main--board
+      %canvas#canvasBoard
     .playbackground__main--boxuji
     .playbackground__main--xuji
   .playbackground__footer
     .playbackground__footer--left
-      %button{id: "xujiResetBtn"} Last Clicked Xuji Reset
-      %button{id: "allResetBtn"} All Reset
+      %button#xujiClearBtn
+        %i.fas.fa-backspace
+        Clear
+      %button#xujiResetBtn
+        %i.fas.fa-trash-alt
+        Reset
     .playbackground__footer--right
-      %button{id: "xujiReturnBtn"} Last Clicked Xuji Return
+      %button#xujiReturnBtn
+        %i.fas.fa-undo
+        Return
