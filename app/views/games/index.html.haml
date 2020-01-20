@@ -1,60 +1,85 @@
 .topbackground
+  .create-screen
+    = form_with url: new_game_path, method: "get", local: "true" do |f|
+      %br/
+      .question-title How many cells？
+      %br/
+      = f.label("Number of cells :", class: "cell-label")
+      = f.radio_button :cell, "6", required: ""
+      = f.label :cell, "6", {value: "6", style: "display: inline-block;", style: "vertical-align: middle;"}
+      = f.radio_button :cell, "8"
+      = f.label :cell, "8", {value: "8", style: "display: inline-block;", style: "vertical-align: middle;"}
+      = f.radio_button :cell, "9"
+      = f.label :cell, "9", {value: "9", style: "display: inline-block;", style: "vertical-align: middle;"}
+      = f.radio_button :cell, "10"
+      = f.label :cell, "10", {value: "10", style: "display: inline-block;", style: "vertical-align: middle;"}
+      %canvas#canvasCellsNum
+      %button.backbtn
+        %i.fas.fa-arrow-circle-left back
+      %button.nextbtn{type: "submit"}
+        %i.fas.fa-arrow-circle-right next
   .description-screen
     .english
-      Game Description
+      %br/
+      .descriptiontitle Game Description
+      %br/
       %br/
       This game is a very simple puzzle game.
       %br/
-      Two or more number with a certain meaning are written on
+      Two or more numbers with a certain meaning are written on
       %br/
       a game board composed of several cells.
       %br/
       What it means is
       %br/
-      .color-red "A square or rectangle exist the always include the cells  where the numbers are written."
+      .color-red "A square or rectangle exist the always include the cells 
+      .color-red where the numbers are written."
+      .color-red However, a box can have only one cell that written number.
       Based on this rule, just make a box so that all the cells are filled.
     %br/
-    ゲーム説明
+    .descriptiontitle ゲーム説明
+    %br/
     %br/
     このゲームは、とても簡単なルールのパズルゲームです。
     %br/
-    いくつかのマスによって構成されたゲーム盤に、ある意味を持つ 2 以上の数字がひとつ書き込まれています。
+    いくつかのマスによって構成されたゲーム盤に、ある意味を持つ 2 以上の数字が複数書き込まれています。
     %br/
-    その意味とは、
+    これらの数字が持つその意味とは、
     %br/
-    .color-red 『数字が書き込まれたマスを必ず含み、その数字分のマスを使った正方形もしくは長方形のはBoxが存在する』
+    .color-red 『数字が書き込まれたマスを必ず含み、その数字分のマスを使った正方形もしくは長方形のはBoxが存在する。』
     というものです。
     %br/
+    .color-red ただし、数字が書き込まれたマスは、ひとつのBoxにひとつしか含んではいけません。
     あとはこのルールに基づき、全てのマスが埋まるようにBoxを作るだけです。
   .game-screen
     .game-screen__title
-      .game-screen__title__english
+      .game-screen__title--english
         BoXuji
-      .game-screen__title__japanese
+      .game-screen__title--japanese
         ぼっくすうじ
 
     .game-screen__quiz-lists
+      .game-screen__quiz-lists--create-game
+        %i.far.fa-plus-square
+        Create
       = link_to "" do
-        .game-screen__quiz-lists__create-game
-          %i.fas.fa-plus
-          Create
-      = link_to "" do
-        .game-screen__quiz-lists__created-game
-          %i.fas.fa-list
+        .game-screen__quiz-lists--created-game
+          %i.far.fa-list-alt
           Created
 
     .game-screen__btn-lists
-      .game-screen__btn-lists__description
-        #description Game Description
+      .game-screen__btn-lists--description
+        #description 
+          %far.fas.fa-info-circle Game Description
       = link_to easy_games_path do
-        .game-screen__btn-lists__easy
+        .game-screen__btn-lists--easy
           .main Easy
           6×6
       = link_to normal_games_path do
-        .game-screen__btn-lists__nomal
+        .game-screen__btn-lists--nomal
           .main Normal
           9×9
       = link_to hard_games_path do
-        .game-screen__btn-lists__hard
+        .game-screen__btn-lists--hard
           .main Hard
           12x12

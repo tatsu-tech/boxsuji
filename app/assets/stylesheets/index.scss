@@ -3,26 +3,89 @@
   width: 100vw;
   background-color: azure;
   position: relative;
+  font-weight: bold;
 
-  .description-screen {
+  .create-screen {
     display: none;
     height: 600px;
     width: 1000px;
     background-color: white;
-    font-size: 20px;
-    line-height: 40px;
     text-align: center;
     border: solid 2px rgb(128, 128, 128);
     position: absolute;
     top: 22%;
     right: 50%;
     transform: translate(50%, 0);
+    .question-title {
+      color: #f3b954;
+      font-size: 30px;
+      font-weight: bold;
+    }
+    .cell-label {
+      font-size: 20px;
+      font-weight: bold;
+      vertical-align: middle;
+    }
+    .cell-form {
+      height: 25px;
+      width: 260px;
+      font-size: 25px;
+    }
+    #canvasCellsNum {
+      height: 440px;
+      width: 1000px;
+    }
+    .backbtn {
+      background-color: rgb(212, 212, 212);
+      height: 50px;
+      width: 180px;
+      font-size: 28px;
+      margin-right: 150px;
+      outline: 0;
+      cursor: pointer;
+    }
+    .nextbtn {
+      background-color: rgb(0, 162, 255);
+      color: white;
+      height: 50px;
+      width: 180px;
+      font-size: 28px;
+      margin-left: 150px;
+      outline: 0;
+      cursor: pointer;
+    }
+    ::before {
+      margin-right: 10px;
+    }
+  }
+  .description-screen {
+    display: none;
+    height: 600px;
+    width: 1000px;
+    background-color: white;
+    color: rgb(140, 140, 140);
+    font-size: 19px;
+    line-height: 28px;
+    text-align: center;
+    border: solid 2px rgb(140, 140, 140);
+    position: absolute;
+    top: 22%;
+    right: 50%;
+    transform: translate(50%, 0);
     cursor: pointer;
     .english {
-      font-size: 22px;
+      font-size: 21px;
+    }
+    .descriptiontitle {
+      display: inline;
+      color: white;
+      background-color: rgb(247, 112, 157);
+      border: 2px solid rgb(247, 112, 157);
+      border-radius: 15px;
+      padding: 12px;
     }
     .color-red{
-      color: red;
+      color: rgb(247, 112, 157);
     }
   }
   .game-screen {
@@ -34,59 +97,66 @@
       text-decoration: none;
     }
 
-    .game-screen__title {
+    &__title {
       text-align: center;
       padding-top: 30px;
       font-weight: bold;
       
-      .game-screen__title__english {
+      &--english {
         font-size: 70px;
       }
-      .game-screen__title__japanese {
+      &--japanese {
         font-size: 45px;
         margin: 20px 0;
       }
     }
 
-    .game-screen__quiz-lists {
+    &__quiz-lists {
       font-size: 35px;
       display: flex;
       justify-content: space-between;
       margin: 40px 0;
 
-      .game-screen__quiz-lists__create-game {
+      &--create-game {
         background-color: #f3b954;
+        color: white;
         padding: 10px 30px;
+        cursor: pointer;
       }
-      .game-screen__quiz-lists__created-game {
+      &--created-game {
         background-color: #80d344;
         padding: 10px 30px;
       }
     }
 
-    .game-screen__btn-lists {
+    &__btn-lists {
       font-size: 35px;
       text-align: center;
       margin: 0 auto;
 
-      .game-screen__btn-lists__description {
+      &--description {
         background-color: palevioletred;
         color: white;
+        font-weight: inherit;
         padding: 10px 0;
         margin: 20px 0;
         cursor: pointer;
+        
+        ::before {
+          margin-right: 10px;
+        }
       }
-      .game-screen__btn-lists__easy {
+      &--easy {
         background-color: #53b1eb;
         padding: 10px 0;
         margin: 20px 0;
       }
-      .game-screen__btn-lists__nomal {
+      &--nomal {
         background-color: #538beb;
         padding: 10px 0;
         margin: 20px 0;
       }
-      .game-screen__btn-lists__hard {
+      &--hard {
         background-color: #2348a5;
         padding: 10px 0;
         margin: 20px 0;
