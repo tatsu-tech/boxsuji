@@ -6,6 +6,7 @@ resources :games, only: [:index, :new, :create, :show] do
     get 'easy'
     get 'normal'
     get 'hard'
+    get 'hell'
   end
 end
 

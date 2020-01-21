@@ -8,14 +8,14 @@ $(document).on('turbolinks:load', function() {
   })
 
   $('input[name="cell"]:radio').change(function() {
-    let radioval = Number($(this).val());
+    let cellVal = Number($(this).val());
     var canvasCellsNum = document.getElementById('canvasCellsNum');
     canvasCellsNum.height = 460;
     canvasCellsNum.width = 1000;
     let ctxCellsNum = canvasCellsNum.getContext('2d');
-    let inputOneSideNum = 440 / radioval
+    let inputOneSideNum = 440 / cellVal
     ctxCellsNum.clearRect(0, 0, 1000, 460);
-    for(let i = 0, j = radioval; i < j; i++) {
+    for(let i = 0, j = cellVal; i < j; i++) {
       for(let k = 0; k < j; k++) {
         ctxCellsNum.beginPath();
         ctxCellsNum.rect(`${280 + i * inputOneSideNum}`, `${10 + k * inputOneSideNum}`, `${inputOneSideNum}`, `${inputOneSideNum}`);
@@ -30,7 +30,7 @@ $(document).on('turbolinks:load', function() {
     ctxCellsNum.textBaseline = 'middle';
     ctxCellsNum.font = 'bold 100px Arial, meiryo, sans-serif';
     ctxCellsNum.fillStyle = 'rgba(0, 0, 0, 0.8)';
-    ctxCellsNum.fillText(`${radioval}x${radioval}`,500, 235);
+    ctxCellsNum.fillText(`${cellVal}x${cellVal}`,500, 235);
   });
 
   let pathName = location.pathname;
@@ -283,6 +283,7 @@ $(document).on('turbolinks:load', function() {
     }
 
     var resultArray = []
+    var questionTitleArray = []
     $(".createbackground").on("click", "#createBtn", function() {
       let xuji = []
       let xujiPositions = []
@@ -539,28 +540,44 @@ $(document).on('turbolinks:load', function() {
         }
         console.log(childIndexHistory)
         if (parentIndexCount == sortTotalXujiPositions.length) {
-          let result = window.confirm('You can create this question.\nAre you sure？');
-          resultArray.push(result);
-          let lastResult = resultArray.pop();
-          if (!lastResult) {
+          let questionTitle = window.prompt("Please enter this question title.", "")
+          questionTitleArray.push(questionTitle)
+          let lastTitle = questionTitleArray.pop();
+          console.log(lastTitle)
+          if (lastTitle === null) {
+            return false;
+          } else if (!lastTitle) {
+            alert('Please enter other title.')
             return false;
           } else {
-            let form = document.getElementById('createForm')
-            let xujiData = document.createElement("input");
-            xujiData.setAttribute("type", "hidden");
-            xujiData.name = "xuji";
-            xujiData.value = xuji;
-            form.appendChild(xujiData);
-            let positionData = document.createElement("input");
-            positionData.setAttribute("type", "hidden");
-            positionData.name = "position";
-            positionData.value = xujiPositions;
-            form.appendChild(positionData);
-            let cellData = document.createElement("input");
-            cellData.setAttribute("type", "hidden");
-            cellData.name = "cell";
-            cellData.value = gon.question.cell;
-            form.appendChild(cellData);
+            let result = window.confirm('Create this question.\nIs it ok？');
+            resultArray.push(result);
+            let lastResult = resultArray.pop();
+            if (!lastResult) {
+              return false;
+            } else {
+              let form = document.getElementById('createForm')
+              let nameData = document.createElement("input");
+              nameData.setAttribute("type", "hidden");
+              nameData.name = "name";
+              nameData.value = lastTitle;
+              form.appendChild(nameData);
+              let cellData = document.createElement("input");
+              cellData.setAttribute("type", "hidden");
+              cellData.name = "cell";
+              cellData.value = gon.question.cell;
+              form.appendChild(cellData);
+              let xujiData = document.createElement("input");
+              xujiData.setAttribute("type", "hidden");
+              xujiData.name = "xuji";
+              xujiData.value = xuji;
+              form.appendChild(xujiData);
+              let positionData = document.createElement("input");
+              positionData.setAttribute("type", "hidden");
+              positionData.name = "position";
+              positionData.value = xujiPositions;
+              form.appendChild(positionData);
+            }
           }
         } else {
           alert('This question has no answer.')

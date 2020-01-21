@@ -13,6 +13,7 @@
 ActiveRecord::Schema.define(version: 2020_01_08_190530) do
 
   create_table "games", force: :cascade do |t|
+    t.string "name", null: false
     t.string "cell", null: false
     t.text "xuji", null: false
     t.text "position", null: false
