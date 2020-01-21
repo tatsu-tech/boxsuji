@@ -1,28 +1,41 @@
 $(document).on('turbolinks:load', function() {
   // パスの取得
   let pathName = location.pathname;
-  // ゲーム盤面のサイズ指定
-  let boardSize = 720
+  // games/以降のパスが、showアクションによるid番号になっているかどうかを判断したいため、pathNameの最後の一文字を取得する
+  let lastPathName = Number(pathName.slice(-1));
 
-  if (pathName.includes("/easy") || pathName.includes("/normal") || pathName.includes("/hard")) {
+  // スコープを制限するため、pathNameにeasyが含まれている時、pathNameにnormalが含まれている時、pathNameにhardが含まれている時、
+  // またpathNameの最後の一文字がshowアクションによるid番号になっている時に読み込むようにする
+  if (pathName.includes("/easy") || pathName.includes("/normal") || pathName.includes("/hard") || pathName.includes("/hell") || Number.isInteger(lastPathName)) {
     if (pathName.includes("/easy")) {
-    // 難易度easyの場合のマス数の指定(6x6=36マス)
-    var totalNum = 36
+      // 難易度easyの場合の総マス数の指定(6x6=36マス)
+      var totalNum = 36
     } else if(pathName.includes("/normal")) {
-    // 難易度normalの場合のマス数の指定(9x9=81マス)
-    var totalNum = 81
+      // 難易度normalの場合の総マス数の指定(9x9=81マス)
+      var totalNum = 81
     } else if(pathName.includes("/hard")) {
-    // 難易度normalの場合のマス数の指定(12x12=144マス)
-    var totalNum = 144
+      // 難易度hardの場合の総マス数の指定(12x12=144マス)
+      var totalNum = 144
+    } else if (pathName.includes("/hell")) {
+      // 難易度hellの場合の総マス数の指定(16x16=256マス)
+      var totalNum = 256
+    } else if (Number.isInteger(lastPathName)) {
+      // showアクションによる作成された問題の時の総マス数の指定
+      let createdQuestionCell = gon.created.cell
+      var totalNum = createdQuestionCell ** 2
     }
 
-    // 難易度に応じ、ひとboxのマス数における高さおよび幅の最大値を取得(totalNumの平方根)
+
+    // ゲーム盤面のサイズ指定
+    const boardSize = 720
+
+    // totalNumの平方根を求めることによって、ゲーム盤面の一辺のマスの数を取得(?x?マスの?の部分を取得する)
     const maxNumBox = Math.sqrt(totalNum);
 
     // 盤面の一辺の長さを求め、そこからひとマス当たりの一辺の長さを求める
     const oneSideNum = boardSize / maxNumBox
 
-    // ゲーム盤面の左上の角のx座標およびy座標をそれぞれ360px,10pxとする
+    // 実際にゲームを行う盤面の左上の角のx座標およびy座標をそれぞれ360px,10pxとする
     const x = 360
     const y = 10
 
@@ -46,7 +59,6 @@ $(document).on('turbolinks:load', function() {
         allNums.push(i)
       }
     }
-    console.log(allNums)
 
     // のちに必要になるため、allNumsそれぞれに1x?以外の掛け算のパターンがあるか判断し、あればそれを配列に、ない場合は空の配列にする
     // ない場合に空にする理由は配列のindex番号を利用するため
@@ -70,25 +82,32 @@ $(document).on('turbolinks:load', function() {
         dAllNum.splice(i, 1, `${j}x${divisorJ}`);
       }
     });
-    console.log(divisorAllNums)
 
-    // 2つの配列の共通する要素を削除する関数overlapAllDeleteを定義([0,1,2,3] + [3,1,0] => [2])
-    const overlapAllDelete = (array1, array2) => {
-      return [...array1, ...array2].filter(value => !array1.includes(value) || !array2.includes(value));
-    }
-    if (totalNum == 36) {
+    // 上記と同じように場合分けする
+    // showアクションによる作成された問題の場合は、gonというgemを用いることにより、railsのコントローラ内の変数を利用できるようにし、
+    // データベースのデータを取得している
+    if (pathName.includes("/easy")) {
       var xuji = [5, 3, 2, 5, 6, 4, 2, 2, 4, 3]
       var xujiPositions = ["600:10", "600:130", "840:130", "960:250", "360:370", "720:370", "840:490", "480:610", "600:610", "960:610"]
-    }
-    if (totalNum == 81) {
+    } else if (pathName.includes("/normal")) {
       var xuji = [6, 9, 6, 4, 3, 2, 5, 4, 5, 3, 8, 3, 8, 9, 4, 2]
       var xujiPositions = ["360:10", "840:90", "520:170", "680:170", "440:250", "680:250", "1000:250", "360:330", "600:330", "520:410", "920:410", "1000:490", "440:570", "760:570", "600:650", "1000:650"]
-    }
-    if (totalNum == 144) {
+    } else if (pathName.includes("/hard")) {
       var xuji = [8, 8, 3, 9, 5, 12, 5, 6, 4, 4, 4, 6, 3, 6, 3, 3, 8, 10, 4, 6, 5, 10, 12]
       var xujiPositions = ["540:10", "960:10", "780:70", "360:130", "420:190", "840:190", "600:250", "780:250", "1020:250", "480:310", "660:310", "960:310", "420:370", "720:370", "600:430", "660:430", "840:430", "420:490", "1020:490", "600:550", "780:550", "900:610", "480:670"]
+    } else if (pathName.includes("/hell")) {
+      var xuji =[8, 6, 4, 10, 9, 10, 15, 16, 12, 14, 3, 2, 8, 5, 4, 3, 4, 5, 9, 12, 3, 8, 6, 9, 16, 8, 12, 4, 15, 10, 6]
+      var xujiPositions = ["495:10", "810:10", "675:55", "945:55", "450:100", "630:145", "855:145", "765:190", "405:235", "990:235", "495:280", "585:280", "720:280", "630:325", "990:325", "675:370", "855:370", "900:370", "495:415", "810:415", "495:460", "1035:460", "765:505", "900:505", "360:550", "720:550", "495:595", "675:595", "945:640", "540:685", "810:685"]
+      console.log(xuji)
+      console.log(xujiPositions)
+    } else if (Number.isInteger(lastPathName)) {
+      var xuji = gon.created.xuji.split(",");
+      var xujiPositions = gon.created.position.split(",");
     }
 
+    // ゲーム盤面の全てのマスの描写
+    // まずlightgray色の720x720の正方形を描写し、その後(maxNumBox + 1)回かけて
+    // ひとマスの一辺の長さずつ幅をとりながらそれぞれ縦横と直線を引いていくことにより、?x?のマスのゲーム盤面を描写している
     let canvasBoard = document.getElementById('canvasBoard');
     let ctxBoard = canvasBoard.getContext('2d');
     canvasBoard.width = boardSize;
@@ -103,6 +122,8 @@ $(document).on('turbolinks:load', function() {
       ctxBoard.lineTo(boardSize, i * oneSideNum);
       ctxBoard.stroke();
     }
+
+    // ゲーム盤面のひとマスひとマスのx座標およびy座標を取得し、配列にする
     let position = []
     for(let i = 0, j = maxNumBox; i < j; i++) {
       for(let k = 0; k < j; k++) {
@@ -121,9 +142,11 @@ $(document).on('turbolinks:load', function() {
     };
     for (let i = 0, j = xuji.length; i < j; i++) {
       let xujiPosition = xujiPositions[i]
+      console.log(xujiPosition)
       $(`.playbackground__main--xuji canvas[data-position='${xujiPosition}']`).attr('data-onOff', "on");
       $(`.playbackground__main--xuji canvas[data-position='${xujiPosition}']`).css('cursor', 'pointer');
       var canvasIdNum = $(`.playbackground__main--xuji canvas[data-position='${xujiPosition}']`).attr('id');
+      console.log(canvasIdNum)
       let iIndex = canvasIdNum.indexOf("s");
       let idNum = Number(canvasIdNum.slice(iIndex + 1));
       eval("ctx" + idNum + ".textAlign = 'center';");
@@ -132,11 +155,15 @@ $(document).on('turbolinks:load', function() {
       eval("ctx" + idNum + ".fillStyle = 'rgba(0, 0, 0, 0.8)';");
       eval("ctx" + idNum + ".fillText('" + `${xuji[i]}` + "', " + `${oneSideNum / 2}, ${oneSideNum / 2}` + ");");
     }
+    // 2つの配列の共通する要素を削除する関数overlapAllDeleteを定義([0,1,2,3] + [3,1,0] => [2])
+    const overlapAllDelete = (array1, array2) => {
+      return [...array1, ...array2].filter(value => !array1.includes(value) || !array2.includes(value));
+    }
     let totalXujiPositions = []
     for (let i = 0, j = xuji.length; i < j; i++) {
       let allXujiPositions = []
       let totalPosition = overlapAllDelete(position, xujiPositions);
-      let xujiNum = xuji[i]
+      let xujiNum = Number(xuji[i]);
       let xujiPosition = xujiPositions[i]
       let colonIndex = xujiPosition.indexOf(":");
       let xujiPositionX = Number(xujiPosition.slice(0, colonIndex));
@@ -253,6 +280,10 @@ $(document).on('turbolinks:load', function() {
         totalXujiPositions.push(allXujiPositions)
       }
     }
+    // 1つの配列内の重複要素を無くす関数overlapIsOneを定義([3,0,1,0,1,2,3,3] => [3,0,1,2])
+    const overlapIsOne = (array) => {
+      return array.filter((value, index, self) => self.indexOf(value) === index);
+    }
     let lastClickedXuji = []
     for (let i = 0, j = xuji.length; i < j; i++) {
       let xujiPosition = xujiPositions[i]
@@ -279,6 +310,7 @@ $(document).on('turbolinks:load', function() {
           let index = Number(xujiIndex.slice(sIndex + 1));
           if (lastClickedXuji[lastClickedXuji.length - 1] != index) {
             lastClickedXuji.push(index);
+            lastClickedXuji = (overlapIsOne(lastClickedXuji.reverse())).reverse();
           }
           let xujiPosition = $(`.playbackground__main--xuji canvas:eq(${index})`).attr('data-position');
           let xujiPositionIndex = xujiPositions.indexOf(xujiPosition);

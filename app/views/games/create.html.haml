@@ -2,7 +2,8 @@
   .createbackground__main
     .createbackground__main--xujilist
     .createbackground__main--xujierase#drawXujiEraseBtn
-      %i.fas.fa-eraser Erase
+      %i.fas.fa-eraser
+      Erase
     .createbackground__main--drawboard
       %canvas#drawBoard
     .createbackground__main--xuji
@@ -10,9 +11,11 @@
       .createbackground__main--boxuji--relative#boxujis
     .createbackground__main--box
     %button#clearBtn
-      %i.fas.fa-backspace Clear
+      %i.fas.fa-backspace
+      Clear
     %button#resetBtn
-      %i.fas.fa-trash-alt Reset
+      %i.fas.fa-trash-alt
+      Reset
   .createbackground__bottom
     %button.createbackground__bottom--drawbtn#drawBtn
       %i.fas.fa-paint-brush
@@ -20,4 +23,5 @@
     = form_with url: games_path, method: "post", local: "true", id: "createForm" do |f|
       = f.hidden_field :post
       %button.createbackground__bottom--createbtn#createBtn
-        %i.fas.fa-check-circle Create
+        %i.fas.fa-check-circle
+        Create

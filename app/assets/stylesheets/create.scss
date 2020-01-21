@@ -26,16 +26,16 @@
       height: 110px;
       width: 150px;
       background-color: rgb(255, 255, 255);
+      color: rgba(0, 0, 0, 0.75);
+      font-size: 27px;
       position: absolute;
       bottom: 10px;
       left: calc(50% - 520px);
       cursor: pointer;
 
       .fa-eraser {
-        color: rgba(0, 0, 0, 0.75);
-        font-size: 27px;
         line-height: 110px;
-        padding: 0 16px 0 15px;
+        padding-left: 10px;
       }
       .fa-eraser:before {
         margin-right: 10px;

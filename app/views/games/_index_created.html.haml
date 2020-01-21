@@ -1,0 +1,12 @@
+.created-screen__list--main
+  - @games.each do |game|
+    .created-screen__list--main--one
+      = link_to game_path(game.id) do
+        .created-screen__list--main--one--cell
+          = game.cell
+          x
+          = game.cell
+        .created-screen__list--main--one--title
+          = game.name
+.pagenate
+  = paginate @games, remote: "true"
