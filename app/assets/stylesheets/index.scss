@@ -224,6 +224,7 @@
     top: 22%;
     right: 50%;
     transform: translate(50%, 0);
+
     .english {
       font-size: 21px;
     }
@@ -254,6 +255,16 @@
     width:40%;
     margin: 0 auto;
     filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.4));
+
+    &__notice-message {
+      height: 30px;
+      width: 100vw;
+      text-align: center;
+      color: rgb(63, 141, 243);
+      font-size: 30px;
+      line-height: 30px;
+      margin: 0 calc(50% - 50vw);
+    }
 
     a {
       color: white;
