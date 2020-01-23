@@ -8,7 +8,7 @@ class GamesController < ApplicationController
         format.js
       end
     else
-      @games = Game.where(cell: params[:sort]).order("created_at DESC").page(params[:page]).per(1)
+      @games = Game.where(cell: params[:sort]).order("created_at DESC").page(params[:page]).per(5)
         respond_to do |format|
           format.html
           format.js

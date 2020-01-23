@@ -25,24 +25,14 @@
     &--xujierase {
       height: 110px;
       width: 150px;
-      background-color: rgb(255, 255, 255);
-      color: rgba(0, 0, 0, 0.75);
+      background-color: rgb(98, 221, 243);
+      color: rgb(255, 255, 255);
       font-size: 27px;
       position: absolute;
       bottom: 10px;
       left: calc(50% - 520px);
+      outline: 0;
       cursor: pointer;
-
-      .fa-eraser {
-        line-height: 110px;
-        padding-left: 10px;
-      }
-      .fa-eraser:before {
-        margin-right: 10px;
-      }
-    }
-    &--xujierase :hover {
-      background-color: rgb(100, 192, 245);
     }
     &--drawboard {
       #drawBoard {
