@@ -51,6 +51,8 @@
       .pagenate
         = paginate @games, remote: "true"
   .description-screen
+    .description-screen__backbtn
+      %i.far.fa-times-circle
     .english
       %br/
       .descriptiontitle Game Description
@@ -58,16 +60,17 @@
       %br/
       This game is a very simple puzzle game.
       %br/
-      A lot of numbers with a certain meaning are written on
+      Several numbers with a certain meaning are written on
       %br/
-      a game board composed of several cells.
+      a game board composed of many cells.
       %br/
-      What it means is
+      What it means is,
       %br/
-      .color-red "There are always square or rectangular boxes
-      .color-red that contain cells with numbers and it consists of that written number of cells."
-      .color-red However, a box can only have one cell that written number.
-      If all cells can be filled based on this rule, clear the game !
+      .color-red " There is a square or rectangular box that contains only one cell with number
+      .color-red and uses that number of cells. "
+      Based on this rule,
+      %br/
+      if you can be filled all cells with a square or rectangular boxs, clear the game !
     %br/
     .descriptiontitle ゲーム説明
     %br/
@@ -78,14 +81,12 @@
     %br/
     これらの数字が持つその意味とは、
     %br/
-    .color-red 『数字が書き込まれたマスを必ず含み、その数字分のマスを使った正方形もしくは長方形のBoxが存在する。』
+    .color-red 『 数字が書き込まれたマスをひとマスだけ含み、
+    .color-red その数字分のマスで構成された正方形もしくは長方形のBoxが存在する。 』
     というものです。
     %br/
-    .color-red ただし、ひとつのBoxにひとつしか数字が書き込まれたマスを含んではいけません。
-    このルールに基づき、ゲーム盤の全てのマスを埋めることができたらゲームクリアです！
+    このルールに基づき、全てのマスを正方形もしくは長方形のBoxで埋めることができたらゲームクリアです！
   .game-screen
-    = link_to hell_games_path do
-      .hellmode
     .game-screen__notice-message
       - if flash[:notice]
         = flash[:notice]
@@ -93,7 +94,8 @@
       .game-screen__title--english
         .english-b B
         .english-o O
-        .english-x X
+        = link_to hell_games_path do
+          .english-x X
         .english-u U
         .english-j J
         .english-i I
