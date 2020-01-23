@@ -4,6 +4,22 @@
   background-color: rgb(110, 110, 110);
   height: 100vh;
 
+  &__backbtn {
+    z-index: 30;
+    height: 30px;
+    width: 130px;
+    background-color: rgb(253, 179, 203);
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
   &__main {
     height: 740px;
     width: 740px;
