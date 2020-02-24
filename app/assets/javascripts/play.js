@@ -143,7 +143,7 @@ $(document).on('turbolinks:load', function() {
     };
     // 先ほど持たせた座標のデータ属性とxujiPositionの座標が一致するマスのcanvasに対して数字を描くと同時に、
     // 数字が描かれていることがわかるように、data-onOffというデータ属性をonにしておく
-    for (let i = 0, j = xujiPosition.length; i < j; i++) {
+    for (let i = 0, j = xujiPositions.length; i < j; i++) {
       let xujiPosition = xujiPositions[i]
       $(`.playbackground__main--xuji canvas[data-position='${xujiPosition}']`).attr('data-onOff', "on");
       $(`.playbackground__main--xuji canvas[data-position='${xujiPosition}']`).css('cursor', 'pointer');
