@@ -18,6 +18,61 @@
     position: absolute;
     top: 10px;
     right: 10px;
+    cursor: pointer;
+  }
+
+  &__normalbtn {
+    display: none;
+    z-index: 30;
+    height: 30px;
+    width: 130px;
+    background-color: #538beb;
+    color: #2352c9;
+    text-decoration: none;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 30px;
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    cursor: pointer;
+  }
+
+  &__hardbtn {
+    display: none;
+    z-index: 30;
+    height: 30px;
+    width: 130px;
+    background-color: #2348a5;
+    color: #002992;
+    text-decoration: none;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 30px;
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    cursor: pointer;
+  }
+
+  &__hellbtn {
+    display: none;
+    z-index: 30;
+    height: 30px;
+    width: 130px;
+    background-color: black;
+    color: rgb(172, 9, 9);
+    text-decoration: none;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 30px;
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    cursor: pointer;
   }
 
   &__main {

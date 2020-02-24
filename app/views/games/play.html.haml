@@ -3,6 +3,18 @@
     .playbackground__backbtn
       %i.fas.fa-angle-double-left
       Top Page
+  = link_to normal_games_path do
+    .playbackground__normalbtn
+      %i.fas.fa-angle-double-right
+      Normal
+  = link_to hard_games_path do
+    .playbackground__hardbtn
+      %i.fas.fa-angle-double-right
+      Hard
+  = link_to hell_games_path do
+    .playbackground__hellbtn
+      %i.fas.fa-angle-double-right
+      Hell
   .playbackground__main
     .playbackground__main--board
       %canvas#canvasBoard

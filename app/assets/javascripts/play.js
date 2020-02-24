@@ -84,8 +84,9 @@ $(document).on('turbolinks:load', function() {
     });
 
     // 上記と同じように場合分けする
-    // showアクションによる作成された問題の場合は、gonというgemを用いることにより、railsのコントローラ内の変数を利用できるようにし、
-    // データベースのデータを取得している
+    // xujiとxujiPositionは配列のindex番号でそれぞれ対応している
+    // (例えばeasyであれば、座標600:10のマスに5の数字が書き込まれ、座標600:130のマスに3の数字が書き込まれ...となっている)
+    // showアクションによる作成された問題の場合は、gonというgemを用いることにより、railsのコントローラ内の変数を利用できるようにし、データベースのデータを取得している
     if (pathName.includes("/easy")) {
       var xuji = [5, 3, 2, 5, 6, 4, 2, 2, 4, 3]
       var xujiPositions = ["600:10", "600:130", "840:130", "960:250", "360:370", "720:370", "840:490", "480:610", "600:610", "960:610"]
@@ -98,8 +99,6 @@ $(document).on('turbolinks:load', function() {
     } else if (pathName.includes("/hell")) {
       var xuji =[8, 6, 4, 10, 9, 10, 15, 16, 12, 14, 3, 2, 8, 5, 4, 3, 4, 5, 9, 12, 3, 8, 6, 9, 16, 8, 12, 4, 15, 10, 6]
       var xujiPositions = ["495:10", "810:10", "675:55", "945:55", "450:100", "630:145", "855:145", "765:190", "405:235", "990:235", "495:280", "585:280", "720:280", "630:325", "990:325", "675:370", "855:370", "900:370", "495:415", "810:415", "495:460", "1035:460", "765:505", "900:505", "360:550", "720:550", "495:595", "675:595", "945:640", "540:685", "810:685"]
-      console.log(xuji)
-      console.log(xujiPositions)
     } else if (Number.isInteger(lastPathName)) {
       var xuji = gon.created.xuji.split(",");
       var xujiPositions = gon.created.position.split(",");
@@ -123,7 +122,9 @@ $(document).on('turbolinks:load', function() {
       ctxBoard.stroke();
     }
 
-    // ゲーム盤面のひとマスひとマスのx座標およびy座標を取得し、配列にする
+    // ゲーム盤面のひとマスひとマスのx座標およびy座標を取得し、positionという配列にする
+    // easyなら36個全ての座標の配列、normalなら81個全ての座標の配列、hardなら144個全ての座標の配列となる
+    // また、配列にすると同時にcanvasも生成し、ひとマスひとマスにその座標のデータ属性を持たせる
     let position = []
     for(let i = 0, j = maxNumBox; i < j; i++) {
       for(let k = 0; k < j; k++) {
@@ -140,13 +141,13 @@ $(document).on('turbolinks:load', function() {
         $(`.playbackground__main--xuji canvas:eq(${index})`).attr('data-position',`${x + oneSideNum * k}:${y + oneSideNum * i}`);
       }
     };
-    for (let i = 0, j = xuji.length; i < j; i++) {
+    // 先ほど持たせた座標のデータ属性とxujiPositionの座標が一致するマスのcanvasに対して数字を描くと同時に、
+    // 数字が描かれていることがわかるように、data-onOffというデータ属性をonにしておく
+    for (let i = 0, j = xujiPosition.length; i < j; i++) {
       let xujiPosition = xujiPositions[i]
-      console.log(xujiPosition)
       $(`.playbackground__main--xuji canvas[data-position='${xujiPosition}']`).attr('data-onOff', "on");
       $(`.playbackground__main--xuji canvas[data-position='${xujiPosition}']`).css('cursor', 'pointer');
       var canvasIdNum = $(`.playbackground__main--xuji canvas[data-position='${xujiPosition}']`).attr('id');
-      console.log(canvasIdNum)
       let iIndex = canvasIdNum.indexOf("s");
       let idNum = Number(canvasIdNum.slice(iIndex + 1));
       eval("ctx" + idNum + ".textAlign = 'center';");
@@ -154,7 +155,8 @@ $(document).on('turbolinks:load', function() {
       eval("ctx" + idNum + ".font = 'bold " + `${oneSideNum / 2}` + "px Arial, meiryo, sans-serif';");
       eval("ctx" + idNum + ".fillStyle = 'rgba(0, 0, 0, 0.8)';");
       eval("ctx" + idNum + ".fillText('" + `${xuji[i]}` + "', " + `${oneSideNum / 2}, ${oneSideNum / 2}` + ");");
-    }
+    };
+
     // 2つの配列の共通する要素を削除する関数overlapAllDeleteを定義([0,1,2,3] + [3,1,0] => [2])
     const overlapAllDelete = (array1, array2) => {
       return [...array1, ...array2].filter(value => !array1.includes(value) || !array2.includes(value));
@@ -361,6 +363,15 @@ $(document).on('turbolinks:load', function() {
               setTimeout(alertTime, 50);
               function alertTime() {
                 alert('Game Clear！')
+                if (pathName.includes("/easy")) {
+                  $(".playbackground__normalbtn").show();
+                }
+                if (pathName.includes("/normal")) {
+                  $(".playbackground__hardbtn").show();
+                }
+                if (pathName.includes("/hard")) {
+                  $(".playbackground__hellbtn").show();
+                }
               }
             }
           }
@@ -451,6 +462,15 @@ $(document).on('turbolinks:load', function() {
               setTimeout(alertTime, 50);
               function alertTime() {
                 alert('Game Clear！')
+                if (pathName.includes("/easy")) {
+                  $(".playbackground__normalbtn").show();
+                }
+                if (pathName.includes("/normal")) {
+                  $(".playbackground__hardbtn").show();
+                }
+                if (pathName.includes("/hard")) {
+                  $(".playbackground__hellbtn").show();
+                }
               }
             }
           }

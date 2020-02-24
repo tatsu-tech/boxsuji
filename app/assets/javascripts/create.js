@@ -1,24 +1,21 @@
 $(document).on('turbolinks:load', function() {
-  $(".game-screen__quiz-lists").on("click", ".game-screen__quiz-lists--create-game", function() {
-    $(".create-screen").fadeToggle();
-  })
-  $(".create-screen").on("click", ".backbtn", function() {
-    $(".create-screen").fadeToggle();
-    return false;
-  })
 
+  // createするためのラジオボタンに何かしらの変化が起きる度にイベント発火
+  // チェックされたラジオボタンのvalueであるマスの数字を取得し、そのマスの数字から見本となるゲーム盤面を描写する
+  // (例えばチェックされたラジオボタンが6であれば、6x6のゲーム盤面を描写し、そのゲーム盤面の中央に"6x6"という文字を100pxの太字で描写する)
   $('input[name="cell"]:radio').change(function() {
     let cellVal = Number($(this).val());
     var canvasCellsNum = document.getElementById('canvasCellsNum');
-    canvasCellsNum.height = 460;
-    canvasCellsNum.width = 1000;
     let ctxCellsNum = canvasCellsNum.getContext('2d');
-    let inputOneSideNum = 440 / cellVal
-    ctxCellsNum.clearRect(0, 0, 1000, 460);
+    let canvasOffsetWidth = canvasCellsNum.offsetWidth
+    let inputOneSideNum = (canvasCellsNum.offsetWidth / cellVal)
+    canvasCellsNum.height = canvasOffsetWidth
+    canvasCellsNum.width = canvasOffsetWidth
+    ctxCellsNum.clearRect(0, 0, canvasOffsetWidth, canvasOffsetWidth);
     for(let i = 0, j = cellVal; i < j; i++) {
       for(let k = 0; k < j; k++) {
         ctxCellsNum.beginPath();
-        ctxCellsNum.rect(`${280 + i * inputOneSideNum}`, `${10 + k * inputOneSideNum}`, `${inputOneSideNum}`, `${inputOneSideNum}`);
+        ctxCellsNum.rect(`${i * inputOneSideNum}`, `${k * inputOneSideNum}`, `${inputOneSideNum}`, `${inputOneSideNum}`);
         ctxCellsNum.fillStyle = 'lightgray';
         ctxCellsNum.strokeStyle = 'black';
         ctxCellsNum.lineWidth = 1;
@@ -30,15 +27,16 @@ $(document).on('turbolinks:load', function() {
     ctxCellsNum.textBaseline = 'middle';
     ctxCellsNum.font = 'bold 100px Arial, meiryo, sans-serif';
     ctxCellsNum.fillStyle = 'rgba(0, 0, 0, 0.8)';
-    ctxCellsNum.fillText(`${cellVal}x${cellVal}`,500, 235);
+    ctxCellsNum.fillText(`${cellVal}x${cellVal}`,canvasOffsetWidth / 2, canvasOffsetWidth / 2);
   });
 
   let pathName = location.pathname;
   // ゲーム盤面のサイズ指定
   let boardSize = 720
+  // スコープを制限するため、pathNameにnewが含まれている時のみ読み込むようにする
   if (pathName.includes("/games/new")) {
+    // これから作成しようとしている問題のマス数をコントローラからgonというgemを使って取得する
     const maxNumBox = gon.question.cell
-
     // 盤面の一辺の長さを求め、そこからひとマス当たりの一辺の長さを求める
     const oneSideNum = boardSize / maxNumBox
 
@@ -66,7 +64,6 @@ $(document).on('turbolinks:load', function() {
         allNums.push(i)
       }
     }
-    console.log(allNums)
     // のちに必要になるため、allNumsそれぞれに1x?以外の掛け算のパターンがあるか判断し、あればそれを配列に、ない場合は空の配列にする
     // ない場合に空にする理由は配列のindex番号を利用するため
     // この処理により、divisorAllNumsという配列はeasyなら[(2)[], (3)[], (4)[2x2], (5)[], (6)[2x3, 3x2]]、normalなら[[], [], [2x2], [], [2x3, 3x2], [2x4, 4x2], [3x3]]、hardなら[[], [], [2x2], [], [2x3, 3x2], [2x4, 4x2], [3x3], [2x5, 5x2], [2x6, 3x4, 4x3, 6x2]]となる
@@ -89,8 +86,8 @@ $(document).on('turbolinks:load', function() {
         dAllNum.splice(i, 1, `${j}x${divisorJ}`);
       }
     });
-    console.log(divisorAllNums)
-    
+    // 定義したallNumsという配列がこれから作成しようとしている問題のマス数に応じた数字になっているため、これをひとつひとつ描写していく
+    // (例えば、作成しようとしている問題が8x8だった場合、allNumsという配列は難易度の関係上素数の1,7を除いた[2, 3, 4, 5, 6, 8]となり、これらの数字のみを使って問題を作成することになる)
     for (let i = 0, j = allNums.length; i < j; i++) {
       var canvas = document.createElement("canvas");
       $(".createbackground__main--xujilist").append(canvas);
@@ -107,6 +104,9 @@ $(document).on('turbolinks:load', function() {
       eval("ctx" + i + "xujilist.fillText('" + `${allNums[i]}` + "', 75," + `${(oneSideNum) / 2}` + ");");
       $(`.createbackground__main--xujilist canvas:eq(${i})`).css('cursor', 'pointer');
     }
+    // ゲーム盤面のひとマスひとマスのx座標およびy座標を取得し、positionという配列にする
+    // easyなら36個全ての座標の配列、normalなら81個全ての座標の配列、hardなら144個全ての座標の配列となる
+    // また、配列にすると同時にcanvasも生成し、ひとマスひとマスにその座標のデータ属性を持たせ、ゲーム盤面を描写する
     let position = []
     for(let i = 0, j = maxNumBox; i < j; i++) {
       for(let k = 0; k < j; k++) {
@@ -195,8 +195,8 @@ $(document).on('turbolinks:load', function() {
         }
       });
     })
-
-    const drawPositions = {
+    
+    let drawPositions = {
       firstClickPositionX:  0,
       firstClickPositionY:  0,
       secondClickPositionX: 0,
@@ -206,8 +206,8 @@ $(document).on('turbolinks:load', function() {
     function onMouseMove(e) {
       eval("var canvasBoxuji" + drawPositions.drawCount + "= document.getElementById('canvasBoxuji" + drawPositions.drawCount + "');");
       eval("var ctxBoxuji = canvasBoxuji" + drawPositions.drawCount + ".getContext('2d');");
-      drawPositions.secondClickPositionX = e.pageX - x;
-      drawPositions.secondClickPositionY = e.pageY - y;
+      drawPositions.secondClickPositionX = e.offsetX;
+      drawPositions.secondClickPositionY = e.offsetY;
       let boxujiWidth = drawPositions.secondClickPositionX - drawPositions.firstClickPositionX
       let boxujiHeight = drawPositions.secondClickPositionY - drawPositions.firstClickPositionY
       eval("canvasBoxuji" + drawPositions.drawCount + ".width = " + boxujiWidth + ";");
@@ -227,8 +227,8 @@ $(document).on('turbolinks:load', function() {
           $("#resetBtn").css("pointer-events", "none");
           $("#drawBtn").css("pointer-events", "none");
           $(this).attr('data-firstClick', 'click')
-          drawPositions.firstClickPositionX = e.pageX - x;
-          drawPositions.firstClickPositionY = e.pageY - y;
+          drawPositions.firstClickPositionX = e.offsetX;
+          drawPositions.firstClickPositionY = e.offsetY;
           var canvas = document.createElement("canvas");
           $(".createbackground__main--boxuji--relative").append(canvas);
           $(".createbackground__main--boxuji--relative canvas:eq(-1)").attr('id','canvasBoxuji' + drawPositions.drawCount);
@@ -262,6 +262,13 @@ $(document).on('turbolinks:load', function() {
     $("#resetBtn").click(function() {
       if ($(".createbackground__main--boxuji--relative canvas:eq(-1)").attr('id')) {
         $(".createbackground__main--boxuji--relative canvas").remove();
+        drawPositions = {
+          firstClickPositionX:  0,
+          firstClickPositionY:  0,
+          secondClickPositionX: 0,
+          secondClickPositionY: 0,
+          drawCount:            0,
+        };
       } else {
         alert('Nothing to reset.')
       }
@@ -280,6 +287,10 @@ $(document).on('turbolinks:load', function() {
     // 1つの配列内の重複要素を無くす関数overlapIsOneを定義([3,0,1,0,1,2,3,3] => [3,0,1,2])
     const overlapIsOne = (array) => {
       return array.filter((value, index, self) => self.indexOf(value) === index);
+    }
+    // 1つの配列内の重複要素を取得する関数overlapGetを定義([1,4,1,5,4,1] => [1,4)
+    const overlapGet = ([...array]) => {
+      return array.filter((value, index, self) => self.indexOf(value) === index && self.lastIndexOf(value) !== index);
     }
 
     var resultArray = []
@@ -502,48 +513,38 @@ $(document).on('turbolinks:load', function() {
           maxChildIndex.push((sortOneXujiPositions.length - 1))
         }
         let parentIndexCount = 0
+        let checkArray = []
         // 再帰関数をwhile文に書き換え、10x10は1秒ほどで検証結果が出るところまでできたが、12x12になるとフリーズしてしまうため、10x10ができるこのアルゴリズムで一時保留
         // 問題によっても左右するが(難易度を考慮しない単純な問題であれば20x20でも時間はかからない)、自作問題では10x10における数字の組み合わせの総数は約8x10*13、12x12では約3x10*18と跳ね上がることがフリーズの原因
         roop: while (parentIndexCount != sortTotalXujiPositions.length) {
           if (childIndexHistory[parentIndexCount] == undefined) {
             childIndexHistory[parentIndexCount] = 0
           }
-          let childIndexHistoryKeys = Object.keys(childIndexHistory)
           let childIndexHistoryValues = Object.values(childIndexHistory)
           if (childIndexHistoryValues[parentIndexCount] > maxChildIndex[parentIndexCount]) {
             if (parentIndexCount - 1 < 0) {
               break roop;
             }
             childIndexHistory[parentIndexCount] = undefined
-            if (childIndexHistory[parentIndexCount - 1] != undefined) {
-              childIndexHistory[parentIndexCount - 1]++
-            }
+            childIndexHistory[parentIndexCount - 1]++
             parentIndexCount--
+            checkArray.pop()
             continue roop;
           }
-          let checkArray = []
-          for (let i = 0, j = childIndexHistoryKeys.length; i < j; i++) {
-            let parentI = childIndexHistoryKeys[i]
-            let childI = childIndexHistoryValues[i]
-            if (childI == undefined) {
-              break;
-            }
-            checkArray.push(...(sortTotalXujiPositions[parentI][childI]))
-          }
-          if (checkArray.length == (overlapIsOne(checkArray)).length) {
+          checkArray.push(sortTotalXujiPositions[parentIndexCount][childIndexHistoryValues[parentIndexCount]])
+          if ((overlapGet(checkArray.flat())).length == 0) {
             parentIndexCount++
             continue roop;
           } else {
             childIndexHistory[parentIndexCount]++
+            checkArray.pop()
             continue roop;
           }
         }
-        console.log(childIndexHistory)
         if (parentIndexCount == sortTotalXujiPositions.length) {
           let questionTitle = window.prompt("Please enter this question title.", "")
           questionTitleArray.push(questionTitle)
           let lastTitle = questionTitleArray.pop();
-          console.log(lastTitle)
           if (lastTitle === null) {
             return false;
           } else if (!lastTitle) {
