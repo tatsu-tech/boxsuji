@@ -14,7 +14,7 @@ if you can be filled all cells with a square or rectangular boxs, clear the game
 ## Easy to create with Draw Mode !
 ![demo](https://gyazo.com/de110c62f1cafaf59ace3c549be5c269/raw)
 ## Of course, you can play the created questions !
-![demo](https://gyazo.com/2a9bfbd5f6f8f707b3908bd6e37f3e56/raw)
+![demo](https://gyazo.com/63b5dfb27c073404cedb66383f722905/raw)
 ## . . . Can you clear this too ?
 ![image](https://gyazo.com/cda5eb8ba7cfb48880ff7844fd43c39d/raw)
 ## Afterword
