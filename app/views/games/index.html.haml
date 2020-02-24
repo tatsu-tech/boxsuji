@@ -2,24 +2,27 @@
   .create-screen
     = form_with url: new_game_path, method: "get", local: "true" do |f|
       %br/
-      .question-title How many cells ?
+      .create-screen__title How many cells ?
       %br/
-      = f.label("Number of cells :", class: "cell-label")
-      = f.radio_button :cell, "6", required: ""
-      = f.label :cell, "6", {value: "6", style: "display: inline-block;", style: "vertical-align: middle;"}
-      = f.radio_button :cell, "8"
-      = f.label :cell, "8", {value: "8", style: "display: inline-block;", style: "vertical-align: middle;"}
-      = f.radio_button :cell, "9"
-      = f.label :cell, "9", {value: "9", style: "display: inline-block;", style: "vertical-align: middle;"}
-      = f.radio_button :cell, "10"
-      = f.label :cell, "10", {value: "10", style: "display: inline-block;", style: "vertical-align: middle;"}
-      %canvas#canvasCellsNum
-      %button.backbtn
-        %i.fas.fa-arrow-circle-left
-        back
-      %button.nextbtn{type: "submit"}
-        %i.fas.fa-arrow-circle-right
-        next
+      .create-screen__label
+        = f.label("Number of cells :")
+        = f.radio_button :cell, "6", required: ""
+        = f.label :cell, "6", {value: "6", style: "display: inline-block;", style: "vertical-align: middle;", class: "create-screen__label--one"}
+        = f.radio_button :cell, "8"
+        = f.label :cell, "8", {value: "8", style: "display: inline-block;", style: "vertical-align: middle;", class: "create-screen__label--one"}
+        = f.radio_button :cell, "9"
+        = f.label :cell, "9", {value: "9", style: "display: inline-block;", style: "vertical-align: middle;", class: "create-screen__label--one"}
+        = f.radio_button :cell, "10"
+        = f.label :cell, "10", {value: "10", style: "display: inline-block;", style: "vertical-align: middle;", class: "create-screen__label--one"}
+      .create-screen__main
+        %canvas#canvasCellsNum
+      .create-screen__foot
+        %button.create-screen__foot--backbtn
+          %i.fas.fa-arrow-circle-left
+          back
+        %button.create-screen__foot--nextbtn{type: "submit"}
+          %i.fas.fa-arrow-circle-right
+          next
   .created-screen
     .created-screen__backbtn
       %i.far.fa-times-circle
@@ -48,44 +51,41 @@
                 =game.cell
               .created-screen__list--main--one--title
                 = game.name
-      .pagenate
-        = paginate @games, remote: "true"
+        .pagenate
+          = paginate @games, remote: "true"
   .description-screen
     .description-screen__backbtn
       %i.far.fa-times-circle
-    .english
+    .description-screen__contents
       %br/
       .descriptiontitle Game Description
       %br/
       %br/
       This game is a very simple puzzle game.
       %br/
-      Several numbers with a certain meaning are written on
-      %br/
-      a game board composed of many cells.
+      Several numbers with a certain meaning are written on a game board composed of many cells.
       %br/
       What it means is,
       %br/
-      .color-red " There is a square or rectangular box that contains only one cell with number
-      .color-red and uses that number of cells. "
+      .color-red " There is a square or rectangular box that contains only one cell with number and uses that number of cells. "
       Based on this rule,
       %br/
       if you can be filled all cells with a square or rectangular boxs, clear the game !
-    %br/
-    .descriptiontitle ゲーム説明
-    %br/
-    %br/
-    このゲームは、とても簡単なルールのパズルゲームです。
-    %br/
-    いくつかのマスによって構成されたゲーム盤に、ある意味を持つ数字が複数書き込まれています。
-    %br/
-    これらの数字が持つその意味とは、
-    %br/
-    .color-red 『 数字が書き込まれたマスをひとマスだけ含み、
-    .color-red その数字分のマスで構成された正方形もしくは長方形のBoxが存在する。 』
-    というものです。
-    %br/
-    このルールに基づき、全てのマスを正方形もしくは長方形のBoxで埋めることができたらゲームクリアです！
+      %br/
+      %br/
+      .descriptiontitle ゲーム説明
+      %br/
+      %br/
+      このゲームは、とても簡単なルールのパズルゲームです。
+      %br/
+      いくつかのマスによって構成されたゲーム盤に、ある意味を持つ数字が複数書き込まれています。
+      %br/
+      これらの数字が持つその意味とは、
+      %br/
+      .color-red 『 数字が書き込まれたマスをひとマスだけ含み、その数字分のマスで構成された正方形もしくは長方形のBoxが存在する。 』
+      というものです。
+      %br/
+      このルールに基づき、全てのマスを正方形もしくは長方形のBoxで埋めることができたらゲームクリアです！
   .game-screen
     .game-screen__notice-message
       - if flash[:notice]

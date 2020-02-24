@@ -1,4 +1,3 @@
-
 * {
   font-family: 'arial black';
 }
@@ -9,76 +8,148 @@
   position: relative;
   font-weight: bold;
   
-
   .create-screen {
     display: none;
-    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
     z-index: 10;
-    height: 600px;
-    width: 1000px;
+    height: 100%;
+    width: 100%;
+    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
     background-color: white;
     text-align: center;
-    border: solid 2px rgb(128, 128, 128);
+    box-sizing: border-box;
     position: absolute;
-    top: 22%;
     right: 50%;
     transform: translate(50%, 0);
-    .question-title {
-      color: #f3b954;
-      font-size: 30px;
-      font-weight: bold;
+    margin: 0 auto;
+
+    @media screen and (min-width: 769px) {
+      max-height: 92%;
+      width: 80%;
+      top: 40%;
+      transform: translate(50%, -40%);
     }
-    .cell-label {
-      font-size: 20px;
+    form {
+      background-color: white;
+      padding-bottom: 50px;
+
+      @media screen and (min-width: 769px) {
+        padding-bottom: 20px;
+      }
+    }
+
+    &__title {
+      color: #f3b954;
+      font-size: 4vw;
+      font-weight: bold;
+
+      @media screen and (max-width: 769px) {
+        font-size: 5.5vw;
+      }
+    }
+    &__label {
+      font-size: 1.6vw;
       font-weight: bold;
       vertical-align: middle;
+
+      @media screen and (max-width: 1200px) {
+        font-size: 1.8vw;
+      }
+      @media screen and (max-width: 769px) {
+        font-size: 2.4vw;
+      }
+      &--one {
+        font-size: 1.2vw;
+        @media screen and (max-width: 1200px) {
+          font-size: 1.4vw;
+        }
+        @media screen and (max-width: 769px) {
+          font-size: 2vw;
+        }
+      }
     }
-    .cell-form {
-      height: 25px;
-      width: 260px;
-      font-size: 25px;
+    &__main {
+      height: 40vw;
+      width: 100%;
+      position: relative;
+
+      @media screen and (max-width: 769px) {
+        height: 100vw;
+        width: 100%;
+      }
+      #canvasCellsNum {
+        height: 38vw;
+        width: 40vw;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+
+        @media screen and (max-width: 769px) {
+          height: 90%;
+          width: 90%;
+        }
+      }
     }
-    #canvasCellsNum {
-      height: 440px;
-      width: 1000px;
-    }
-    .backbtn {
-      background-color: rgb(212, 212, 212);
-      height: 50px;
-      width: 180px;
-      font-size: 28px;
-      margin-right: 150px;
-      outline: 0;
-      cursor: pointer;
-    }
-    .nextbtn {
-      background-color: rgb(0, 162, 255);
-      color: white;
-      height: 50px;
-      width: 180px;
-      font-size: 28px;
-      margin-left: 150px;
-      outline: 0;
-      cursor: pointer;
-    }
-    ::before {
-      margin-right: 10px;
+    &__foot {
+      display: flex;
+      justify-content: space-around;
+      height: 4vw;
+      width: 100%;
+
+      &--backbtn {
+        background-color: rgb(212, 212, 212);
+        height: 8vw;
+        width: 30vw;
+        font-size: 4vw;
+        outline: 0;
+        cursor: pointer;
+
+        @media screen and (min-width: 769px) {
+          height: 4vw;
+          width: 20vw;
+          font-size: 2.2vw;
+        }
+      }
+      &--nextbtn {
+        background-color: rgb(0, 162, 255);
+        color: white;
+        height: 8vw;
+        width: 30vw;
+        font-size: 4vw;
+        outline: 0;
+        cursor: pointer;
+
+        @media screen and (min-width: 769px) {
+          height: 4vw;
+          width: 20vw;
+          font-size: 2.2vw;
+        }
+      }
+      ::before {
+        margin-right: 10px;
+      }
     }
   }
   .created-screen {
     display: none;
     filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
     z-index: 10;
-    height: 600px;
-    width: 1000px;
+    height: 100%;
+    width: 100%;
     background-color: white;
-    border: solid 2px rgb(128, 128, 128);
     position: absolute;
-    top: 22%;
     right: 50%;
     transform: translate(50%, 0);
     box-sizing: border-box;
 
+    @media screen and (min-width: 769px) {
+      height: 92%;
+      width: 80%;
+      top: 50%;
+      transform: translate(50%, -50%);
+    }
     .fa-times-circle {
       font-size: 45px;
       color: rgb(128, 128, 128);
@@ -92,69 +163,129 @@
     }
     .created-screen__top {
       height: 80px;
-      margin: 15px 0 15px;
+      margin: 30px 0 50px;
       text-align: center;
+
+      @media screen and (max-width: 479px) {
+        margin: 30px 0 30px;
+      }
 
       .created-screen__top--title {
         color: #69bb2f;
-        font-size: 30px;
+        font-size: 4vw;
         font-weight: bold;
+        margin-bottom: 20px;
+
+        @media screen and (max-width: 479px) {
+          font-size: 6vw;
+        }
       }
       #sortForm {
-        margin-top: 15px;
 
         .sort-label {
-          font-size: 20px;
+          font-size: 1.4vw;
           font-weight: bold;
           vertical-align: middle;
+
+          @media screen and (max-width: 1200px) {
+            font-size: 2vw;
+          }
+          @media screen and (max-width: 479px) {
+            font-size: 3vw;
+          }
+        }
+        label {
+          font-size: 1.2vw;
+
+          @media screen and (max-width: 1200px) {
+            font-size: 1.5vw;
+          }
+          @media screen and (max-width: 479px) {
+            font-size: 2vw;
+          }
         }
         .sortbtn {
-          font-size: 14px;
+          font-size: 1.1vw;
           font-weight: bold;
           margin: 0 10px 0 12px;
+
+          @media screen and (max-width: 1200px) {
+            font-size: 1.5vw;
+          }
+          @media screen and (max-width: 479px) {
+            font-size: 2vw;
+            margin-left: 150px;
+          }
         }
         .sortclearbtn {
-          font-size: 14px;
+          font-size: 1.1vw;
           font-weight: bold;
+
+          @media screen and (max-width: 1200px) {
+            font-size: 1.5vw;
+          }
+          @media screen and (max-width: 479px) {
+            font-size: 2vw;
+          }
         }
       }
     }
     .created-screen__list {
-      height: 480px;
 
       .created-screen__list--main {
-        height: 430px;
+        background-color: white;
 
         .created-screen__list--main--one {
           height: 50px;
           width: 100%;
-          margin-bottom: 38px;
+          margin-bottom: 50px;
+
+          @media screen and (max-width: 413px) {
+            margin-bottom: 25px;
+          }
 
           a {
-            height: 60px;
+            height: 6vw;
             width: 80%;
             display: flex;
             justify-content: center;
             border: 2px solid rgb(19, 146, 3);
-            margin: 5px auto;
+            margin: 0 auto;
             text-decoration: none;
+
+            @media screen and (max-width: 479px) {
+              height: 10vw;
+            }
     
             .created-screen__list--main--one--cell {
               width: 15%;
               background-color: #69bb2f;
               color: white;
-              font-size: 25px;
-              line-height: 60px;
+              font-size: 2vw;
+              line-height: 6vw;
               border-right: 2px solid rgb(19, 146, 3);
               text-align: center;
+
+              @media screen and (max-width: 479px) {
+                width: 22%;
+                font-size: 4vw;
+                line-height: 10vw;
+              }
             }
             .created-screen__list--main--one--title {
               width: 85%;
               background-color: white;
               color: #69bb2f;
-              font-size: 20px;
-              line-height: 60px;
-              padding-left: 10px;
+              font-size: 2vw;
+              line-height: 6vw;
+              padding: 0 10px;
+              overflow: hidden;
+
+              @media screen and (max-width: 479px) {
+                width: 78%;
+                font-size: 4vw;
+                line-height: 10vw;
+              }
             }
           }
         }
@@ -172,11 +303,14 @@
         height: 50px;
         width: 100%;
         height: 10%;
-        
+
+        @media screen and (max-width: 479px) {
+          font-size: 3vw;
+        }
         .pagination {
           display: flex;
           justify-content: center;
-          margin-top: 15px;
+          padding: 20px;
         }
         
         a {
@@ -212,21 +346,26 @@
     display: none;
     filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
     z-index: 10;
-    height: 600px;
-    width: 1000px;
+    height: 100%;
+    width: 100%;
     background-color: white;
     color: rgb(140, 140, 140);
-    font-size: 19px;
-    line-height: 28px;
     text-align: center;
-    border: solid 2px rgb(140, 140, 140);
-    position: absolute;
-    top: 22%;
-    right: 50%;
-    transform: translate(50%, 0);
+    position: relative;
 
-    .english {
-      font-size: 21px;
+    @media screen and (min-width: 769px) {
+      font-size: 2vw;
+      line-height: 2.2vw;
+      position: absolute;
+      right: 50%;
+      height: 92%;
+      width: 80%;
+      top: 50%;
+      transform: translate(50%, -50%);
+    }
+    @media screen and (max-width: 768px) {
+      font-size: 3.2vw;
+      line-height: 6vw;
     }
     .fa-times-circle {
       font-size: 45px;
@@ -239,26 +378,41 @@
     .description-screen__backbtn :hover {
       color: rgb(247, 112, 157);
     }
-    .descriptiontitle {
-      display: inline;
-      color: white;
-      background-color: rgb(247, 112, 157);
-      border: 2px solid rgb(247, 112, 157);
-      border-radius: 15px;
-      padding: 12px;
-    }
-    .color-red{
-      color: rgb(247, 112, 157);
+    &__contents {
+      background-color: white;
+      padding: 0 45px 12px;
+
+      .descriptiontitle {
+        display: inline;
+        color: white;
+        background-color: rgb(247, 112, 157);
+        border: 2px solid rgb(247, 112, 157);
+        border-radius: 15px;
+        padding: 12px;
+      }
+      .color-red{
+        color: rgb(247, 112, 157);
+      }
     }
   }
   .game-screen {
-    width:40%;
-    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
     filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.4));
+
+    @media screen and (min-width: 769px) {
+      width: 50%;
+    }
 
     &__notice-message {
       height: 30px;
-      width: 100vw;
+      width: 100%;
       text-align: center;
       color: rgb(63, 141, 243);
       font-size: 30px;
@@ -275,11 +429,21 @@
     &__title {
       color: rgb(28, 28, 28);
       text-align: center;
-      padding-top: 45px;
       font-weight: bold;
+      padding-top: 30px;
+
+      @media screen and (min-width: 769px) {
+        font-size: 5vw;
+      }
+      @media screen and (max-width: 769px) {
+        font-size: 10vw;
+      }
+      @media screen and (max-width: 479px) {
+        font-size: 12vw;
+        padding-top: 10px;
+      }
       
       &--english {
-        font-size: 70px;
         display: flex;
         justify-content: center;
         font-family: 'arial black';
@@ -287,45 +451,94 @@
         
         .english-b {
           margin-top: 30px;
+
+          @media screen and (max-width: 479px) {
+            margin-top: 20px;
+          }
         }
         .english-o {
-          font-size: 80px;
+          font-size: calc(100% + 10px);
           margin: 15px 1px 0 2px;
+
+          @media screen and (max-width: 479px) {
+            font-size: calc(100% + 6px);
+            margin: 10px 1px 0 2px;
+          }
         }
         .english-x {
-          font-size: 90px;
+          font-size: calc(100% + 20px);
           color: rgb(28, 28, 28);
+
+          @media screen and (max-width: 479px) {
+            font-size: calc(100% + 12px);
+          }
         }
         .english-u {
-          font-size: 80px;
+          font-size: calc(100% + 10px);
           margin-top: 14px;
+
+          @media screen and (max-width: 479px) {
+            font-size: calc(100% + 6px);
+            margin-top: 10px;
+          }
         }
         .english-j {
-          font-size: 73px;
+          font-size: calc(100% + 3px);
           margin-top: 22px;
+
+          @media screen and (max-width: 479px) {
+            font-size: calc(100% + 2px);
+            margin-top: 15px;
+          }
         }
         .english-i {
           margin-top: 30px;
+
+          @media screen and (max-width: 479px) {
+            margin-top: 20px;
+          }
         }
       }
       &--japanese {
-        font-size: 45px;
+        font-size: calc(100% - 20px);
         margin: 10px 0 20px;
         font-family: 'arial black';
+
+        @media screen and (max-width: 479px) {
+          font-size: calc(100% - 10px);
+        }
       }
     }
 
     &__quiz-lists {
-      font-size: 35px;
-      display: flex;
-      justify-content: space-between;
-      margin: 0px 0 40px;
-
+      margin-bottom: 40px;
+      
+      @media screen and (min-width: 770px) {
+        font-size: 2.6vw;
+        display: flex;
+        justify-content: space-between;
+      }
+      @media screen and (max-width: 769px) {
+        font-size: 7vw;
+        display: block;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      @media screen and (max-width: 374px) {
+        font-size: 5.5vw;
+        display: block;
+        text-align: center;
+        margin-bottom: 20px;
+      }
       &--create-game {
         background-color: #f3b954;
         color: white;
         padding: 10px 30px;
         cursor: pointer;
+
+        @media screen and (max-width: 769px) {
+          margin-bottom: 20px;
+        }
       }
       &--created-game {
         background-color: #80d344;
@@ -336,10 +549,18 @@
     }
 
     &__btn-lists {
-      font-size: 35px;
       text-align: center;
       margin: 0 auto;
 
+      @media screen and (min-width: 769px) {
+        font-size: 2.6vw;
+      }
+      @media screen and (max-width: 769px) {
+        font-size: 7vw;
+      }
+      @media screen and (max-width: 374px) {
+        font-size: 5.5vw;
+      }
       &--description {
         background-color: palevioletred;
         color: white;
@@ -368,8 +589,21 @@
         margin: 20px 0;
       }
       .main {
-        font-size: 40px;
         padding-bottom: 15px;
+
+        @media screen and (min-width: 769px) {
+          font-size: 2.8vw;
+        }
+        @media screen and (max-width: 769px) {
+          font-size: 8vw;
+        }
+        @media screen and (max-width: 479px) {
+          font-size: 7.5vw;
+        }
+        @media screen and (max-width: 374px) {
+          font-size: 6.5vw;
+          padding-bottom: 12px;
+        }
       }
     }
   }
